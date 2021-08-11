@@ -1,1 +1,102 @@
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+:root {
+  --primary: #006065;
+  --primary-light: #addadd;
+  --accent-light: #e9e9e9;
+  --accent: #424242;
+  --warm: #9b4b4b;
+}
+// :root {
+//     --primary: #4155B0;
+//     --primary-light: white;
+//     --secondary: #4e71b1;
+//     --secondary-soft: #93a4c5;
+//     --secondary-light: #c8d6f3;
+//     --accent: #fcf071 ;
+//     --warn: rgb(160, 36, 56);
+//     --success: rgb(34, 90, 34);
+//   }
+
+.ng-trigger.ng-trigger-routeAnimations {
+  height: 100%;
+}
+
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
+
+// Router outlet heigt 100%
+.ng-tns-c0-0.ng-trigger.ng-trigger-routeAnimations {
+  height: -webkit-fill-available;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+form {
+  height: -webkit-fill-available;
+}
+
+mat-card {
+  &.custom-card {
+    max-width: 800px;
+  }
+  .mat-card-actions {
+    margin: 0px !important;
+  }
+
+  & h1 {
+    color: var(--primary);
+  }
+}
+
+router-outlet.ng-tns-c286-0 {
+  height: 100%;
+}
+
+button.mat-flat-button.mat-button-base {
+  border-radius: 20px;
+}
+
+mat-card-title.mat-card-title {
+  color: var(--primary);
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.home-container {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(173, 218, 221, 0.6895133053221288) 100%,
+    rgba(0, 212, 255, 1) 100%
+  );
+}

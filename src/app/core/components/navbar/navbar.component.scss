@@ -1,0 +1,95 @@
+$toolbar: 60px;
+
+mat-toolbar.mat-toolbar {
+    height: $toolbar;
+}
+
+/* Main area */
+.sidenav-container {
+    height: calc(100% - #{$toolbar});
+
+    a.mat-list-item.active {
+        box-sizing: border-box;
+    }
+
+    .panel-wrapper.mat-expansion-panel {
+        box-shadow: none;
+    }
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.expansion-wrapper {
+    .mat-list-item-content {
+        font-size: 90%;
+        padding-left: 30px !important;
+    }
+
+    .mat-expansion-panel {
+        // background-color: var(--primary);
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0px;
+    }
+
+    .mat-expansion-panel-header-title {
+        // color: var(--primary-light);
+    }
+
+    .mat-expansion-panel-header:not([aria-disabled="true"]) {
+        // background-color: var(--primary);
+        border-radius: 0px;
+        // padding: 0px 16px;
+    }
+}
+
+.mat-expansion-indicator::after {
+    // color: var(--primary-light) !important;
+}
+
+.sidenav {
+    // background-color: var(--accent) !important;
+
+    .mat-list-base .mat-list-item {
+        background-color: var(--accent);
+        color: white;
+    }
+}
+
+.user-name {
+    padding-right: 12px;
+}
+
+.user-photo {
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+}
+
+.mat-drawer-inner-container .mat-nav-list .mat-list-item-content:hover {
+    // background-color: var(--primary-soft);
+}
+
+button.ng-star-inserted.mat-stroked-button {
+    // background: var(--primary);
+    color: white;
+}
+
+.mat-stroked-button:not([disabled]) {
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+.logo {
+    width: 70px;
+    outline: none;
+}
+
+.mat-menu-content {
+    .material-icons, span {
+        color: var(--primary);
+    }
+}
