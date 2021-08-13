@@ -39,18 +39,17 @@ export class SigninComponent {
             const password = this.signForm.get('password').value;
 
             this.progressBarMode = 'indeterminate';
+
             try {                
                 await this.authService.login({ email, password });
-            } catch (error) {
-                if (error instanceof WrongCredentialError) {
-                    // Show Error in the View
-                  } else { 
-                      throw error;
-                    }
-                }
+            } catch (error) {               
+                if (error instanceof WrongCredentialError) { 
+                    console.log("here");
+                    this.signForm.setErrors({ userPass: true });
+                 } else { throw error;  }
+            } finally{
+                this.progressBarMode = '';
             }
-     
-            this.progressBarMode = '';
         }
     }
 }

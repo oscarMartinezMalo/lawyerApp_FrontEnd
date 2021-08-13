@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +19,8 @@ export class NavbarComponent {
   afAuth: any;
 
   constructor(
-      private breakpointObserver: BreakpointObserver
+      private breakpointObserver: BreakpointObserver,
+      public authService: AuthService
   ) { }
 
   // tslint:disable-next-line: use-lifecycle-interface

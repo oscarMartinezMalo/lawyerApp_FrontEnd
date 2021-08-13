@@ -25,3 +25,8 @@ mat-card {
       color: var(--primary);
     }
   }
+
+  .error-message {
+    background-color: var(--warm);
+    border-radius: 5px;
+  }

@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     exports: [
@@ -37,7 +38,8 @@ import { MatNativeDateModule } from '@angular/material/core';
         MatProgressSpinnerModule,
         MatDialogModule,
         MatNativeDateModule,
-        MatDatepickerModule
+        MatDatepickerModule,
+        FlexLayoutModule
     ]
 })
 export class MaterialModulesModule {}

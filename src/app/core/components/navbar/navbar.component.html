@@ -1,16 +1,16 @@
 <mat-toolbar class="container" color="primary">
     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50%">
         <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer?.toggle()"
-            *ngIf="(isHandset$ | async)">
+            *ngIf="(isHandset$ | async) && (authService.user$ | async)">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <img src="../../../../assets/logo.svg" class="logo" [routerLink]="true ? ['team-list'] : ['/home']" routerLinkActive="router-link-active">
+        <img src="../../../../assets/logo.svg" class="logo" [routerLink]="(authService.user$ | async) ? ['team-list'] : ['/home']" routerLinkActive="router-link-active">
         <span class="spacer" *ngIf="isHandset$ | async"></span>
     </div>
     
 
     <div fxLayout="row" fxLayoutAlign="end center" fxFlex="50%">
-        <div *ngIf='!true' fxLayoutGap="8px">
+        <div *ngIf='!(authService.user$ | async)' fxLayoutGap="8px">
             <button routerLinkActive="active" routerLink="/signin" (click)="drawerClose()" #rla="routerLinkActive"
                 [ngClass]="rla.isActive ?  'mat-stroked-button mat-button-base' : 'mat-button'">
                 Sign In
@@ -22,7 +22,7 @@
             </button>
         </div>
 
-        <div *ngIf='true'>
+        <div *ngIf="(authService.user$ | async) as User">
             <button mat-button class="example-icon" [matMenuTriggerFor]="menu">
                 <mat-icon class="material-icons md-dark" style="margin-right: 5px;">account_circle</mat-icon>
                 <span class="user" *ngIf='!(isHandset$ | async)'>Oscar</span>
@@ -46,7 +46,7 @@
                     <span>Profile</span>
                 </button>
 
-                <button type="button" routerLinkActive="active" mat-menu-item>
+                <button type="button" routerLinkActive="active" mat-menu-item (click)="authService.logOut()">
                     <mat-icon class="material-icons md-dark ">power_settings_new</mat-icon>
                     <span>Logout</span>
                 </button>
@@ -57,9 +57,10 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
+    
     <mat-sidenav #drawer class="sidenav" color="primary" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)"
-        *ngIf="true">
+        *ngIf="authService.user$ | async">
         <!-- [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"  *ngIf="(authService.user | async) && (authService.user$ | async)"> -->
 
         <mat-nav-list>
@@ -69,33 +70,8 @@
             <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/event-list']">Events
                 </a>
             <mat-divider></mat-divider>
-
-            <!-- <a mat-list-item (click)="drawerClose()">Calendar</a>
-      <mat-divider></mat-divider> -->
-
-            <!-- <a mat-list-item (click)="drawerClose()">Messages</a>
-      <mat-divider></mat-divider>
-      <mat-accordion class="expansion-wrapper">
-        <mat-expansion-panel class="panel-wrapper">
-          <mat-expansion-panel-header>
-            <mat-panel-title> Team Bad Boys </mat-panel-title>
-          </mat-expansion-panel-header>
-            <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/home']">Home</a>
-            <mat-divider></mat-divider>
-          <a mat-list-item routerLinkActive="active" [routerLink]="['/', 'pending']" (click)="drawerClose()">Score</a>
-          <a mat-list-item routerLinkActive="active" [routerLink]="['/myfvr', 'declined']"
-            (click)="drawerClose()">Schedule</a>
-          <a mat-list-item routerLinkActive="active" [routerLink]="['/']" (click)="drawerClose()">Stats
-            Approval</a>
-          <a mat-list-item routerLinkActive="active" [routerLink]="['/myfvr', 'approved']"
-            (click)="drawerClose()">Players</a>
-          <a mat-list-item routerLinkActive="active" [routerLink]="['/myfvr', 'declined']"
-            (click)="drawerClose()">Photos</a>
-        </mat-expansion-panel>
-        <mat-divider></mat-divider> -->
-
-            <!-- </mat-accordion> -->
         </mat-nav-list>
+
     </mat-sidenav>
 
     <mat-sidenav-content>

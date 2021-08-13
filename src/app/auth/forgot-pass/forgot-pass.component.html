@@ -5,7 +5,7 @@
 
     <mat-card class="mat-custom-authen">
         <form [formGroup]="signForm" novalidate (ngSubmit)="onSubmit()">
-            <div fxLayout="row" fxLayoutAlign="center center" class="mat-typography">
+            <div fxLayout="row" fxLayoutAlign="start center" class="mat-typography">
                 <h2 style="font-weight: 800;">Reset Password</h2>
             </div>
 
@@ -23,7 +23,7 @@
                 </mat-form-field>
 
             </mat-card-content>
-            <div fxLayout="row" fxLayoutAlign="center center">
+            <div fxLayout="row" fxLayoutAlign="start center">
                 <button mat-flat-button color="primary" type="submit">Send Reset Link</button>
             </div>
         </form>
@@ -31,5 +31,8 @@
             <a routerLink="/signin" routerLinkActive="router-link-active">Sign-In</a> ||
             <a routerLink="/signup" routerLinkActive="router-link-active">Sign-nUp</a>
         </p>
+        <div class="alert alert-danger p-0 mb-0" role="alert" *ngIf="signForm.hasError('userPass')">
+            Wrong <strong>User</strong> or <strong>Password</strong>
+            </div>
     </mat-card>
 </div>
