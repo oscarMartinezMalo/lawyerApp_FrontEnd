@@ -36,7 +36,7 @@ interface ResetPassword {
   providedIn: 'root'
 })
 export class AuthService {
-  readonly BASE_URL = `${environment.baseUrl}auth/`;
+  readonly BASE_URL = `${environment.baseUrl}api/`;
   readonly JWT_TOKEN = 'JWT_TOKEN';
   readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
   // Set to Undefined to check in the Guard when refresh the page
@@ -60,6 +60,7 @@ export class AuthService {
   }
 
   signup(emailPassword: NameEmailPassword) {
+    console.log("SignUp service was called");
     // return this.http.post(this.BASE_URL + 'signup', emailPassword).
     //   pipe(take(1),
     //     catchError((error: Response) => {
@@ -70,25 +71,28 @@ export class AuthService {
     //     }));
   }
 
-  login(emailPassword: EmailPassword) {
-    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/products';
-
-    // return this.http.post(this.BASE_URL + 'login', emailPassword).
-    //   pipe(take(1), map((token: LoginResponse) => {
-    //     localStorage.setItem(this.JWT_TOKEN, token.accessToken);
-    //     localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
-    //     this.user$.next({ id: token.id, email: token.email, role: token.role });
-    //     this.router.navigate([returnUrl]);
-    //   }),
-    //     catchError((error: Response) => {
-    //       if (error.status === 403) {
-    //         return throwError(new WrongCredentialError());
-    //       }
-    //       return throwError(new AppError(error));
-    //     }));
+  async login(emailPassword: EmailPassword) {
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+    console.log(this.BASE_URL+ 'account');
+    await this.http.post(this.BASE_URL + 'account', emailPassword).
+      pipe(take(1), map((token: LoginResponse) => {
+        localStorage.setItem(this.JWT_TOKEN, token.accessToken);
+        localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
+        this.user$.next({ id: token.id, email: token.email, role: token.role });
+        this.router.navigate([returnUrl]);
+      }),
+        catchError((error: Response) => {
+          console.log(error);
+          if (error.status === 401) {
+            return throwError(new WrongCredentialError());
+          }
+          return throwError(new AppError(error));
+        })).toPromise();
   }
 
   resetPassword(resetPassword: ResetPassword ){
+    console.log("Resert service was called");
+
     // return this.http.put(this.BASE_URL + 'resetPassword', resetPassword).
     //   pipe(take(1), map((token: LoginResponse) => {
     //     // localStorage.setItem(this.JWT_TOKEN, token.accessToken);
@@ -104,6 +108,8 @@ export class AuthService {
   }
 
   forgotPassword( email: string){
+    console.log("Forgot service was called", email);
+
     // return this.http.put(this.BASE_URL + 'forgotPassword', {email}).
     //   pipe(take(1), map((resp: any) => {
     //     return resp;
@@ -117,6 +123,8 @@ export class AuthService {
   }
 
   forgotPasswordToken(email: string, newPassword: string, forgotPasswordToken: string) {
+    console.log("Forgot PasswordToken service was called");
+
     // return this.http.put(this.BASE_URL + 'forgotPasswordToken', {email, newPassword, forgotPasswordToken}).
     //   pipe(take(1), map((resp: any) => {
     //     return resp;
@@ -130,7 +138,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
+    // const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
 
     // return this.http.post(this.BASE_URL + 'refresh-token', { refreshToken }).
     //   pipe(take(1), tap((token: { accessToken: string }) => {
@@ -143,6 +151,8 @@ export class AuthService {
   }
 
   async logOut() {
+    console.log("Logout service was called");
+
     // const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
     // this.http.delete(this.BASE_URL + refreshToken).pipe(
     //   catchError((error: Response) => {

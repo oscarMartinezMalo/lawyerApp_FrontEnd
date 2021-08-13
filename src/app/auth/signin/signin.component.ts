@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AppError } from 'src/app/shared/errors/app-error';
+import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-error';
 import { AuthService } from '../../shared/services/auth.service';
 // import { SharedService } from 'src/app/shared/shared.service';
 
@@ -23,23 +25,32 @@ export class SigninComponent {
         private authService: AuthService,
         // private sharedService: SharedService
     ) { }
-
-    async onSubmit() {
-        if (this.signForm.valid && this.signForm.touched) {
-            const email = this.signForm.get('email').value.trim();
-            const password = this.signForm.get('password').value;
-
-            this.progressBarMode = 'indeterminate';
-            await this.authService.login({ email, password });
-            this.progressBarMode = '';
-        }
-    }
-
     emailValid() {
         return control => {
             // tslint:disable-next-line: max-line-length
             const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             return regex.test(control.value) ? null : { invalidEmail: true };
         };
+    }
+    
+    async onSubmit() {
+        if (this.signForm.valid && this.signForm.touched) {
+            const email = this.signForm.get('email').value.trim();
+            const password = this.signForm.get('password').value;
+
+            this.progressBarMode = 'indeterminate';
+            try {                
+                await this.authService.login({ email, password });
+            } catch (error) {
+                if (error instanceof WrongCredentialError) {
+                    // Show Error in the View
+                  } else { 
+                      throw error;
+                    }
+                }
+            }
+     
+            this.progressBarMode = '';
+        }
     }
 }

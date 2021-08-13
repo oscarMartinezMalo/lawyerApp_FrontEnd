@@ -14,7 +14,6 @@ export class ForgotPassComponent {
 
   signForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, this.emailValid()])],
-      password: ['', [Validators.required, Validators.minLength(3)]]
   });
 
   constructor(
@@ -26,10 +25,9 @@ export class ForgotPassComponent {
   async onSubmit() {
       if (this.signForm.valid && this.signForm.touched) {
           const email = this.signForm.get('email').value.trim();
-          const password = this.signForm.get('password').value;
 
           this.progressBarMode = 'indeterminate';
-          await this.authService.login({ email, password });
+          await this.authService.forgotPassword(email);
           this.progressBarMode = '';
       }
   }
