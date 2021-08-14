@@ -13,8 +13,9 @@ interface EmailPassword {
   password: string;
 }
 
-interface NameEmailPassword {
-  name: string;
+interface SignUpUser {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }
@@ -59,22 +60,21 @@ export class AuthService {
     // }));
   }
 
-  signup(emailPassword: NameEmailPassword) {
-    console.log("SignUp service was called");
-    // return this.http.post(this.BASE_URL + 'signup', emailPassword).
-    //   pipe(take(1),
-    //     catchError((error: Response) => {
-    //       if (error.status === 403) {
-    //         return throwError(new UserExitsError());
-    //       }
-    //       return throwError(new AppError(error));
-    //     }));
+  async signup(emailPassword: SignUpUser) {
+    await this.http.post(this.BASE_URL + 'account/signup', emailPassword).
+      pipe(take(1),
+        catchError((error: Response) => {
+          if (error.status === 403) {
+            return throwError(new UserExitsError());
+          }
+          return throwError(new AppError(error));
+        })).toPromise();
   }
 
   async login(emailPassword: EmailPassword) {
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
-    console.log(this.BASE_URL+ 'account');
-    await this.http.post(this.BASE_URL + 'account', emailPassword).
+
+    await this.http.post(this.BASE_URL + 'account/signin', emailPassword).
       pipe(take(1), map((token: LoginResponse) => {
         localStorage.setItem(this.JWT_TOKEN, token.accessToken);
         localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);

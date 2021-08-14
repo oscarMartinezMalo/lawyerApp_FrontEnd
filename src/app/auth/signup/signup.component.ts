@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AppError } from 'src/app/shared/errors/app-error';
+import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-error';
 
 @Component({
     selector: 'app-signup',
@@ -14,7 +16,8 @@ export class SignupComponent {
     hasUnitNumber = false;
 
     signUpForm = this.fb.group({
-        name: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ']*")]],
+        firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ']*")]],
+        lastName: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ']*")]],
         email: ['', Validators.compose([Validators.required, this.emailValid()])],
         password: ['', [Validators.required, Validators.minLength(3)]]
     });
@@ -26,13 +29,21 @@ export class SignupComponent {
 
     async onSubmit() {
         if (this.signUpForm.valid && this.signUpForm.touched) {
-            const name = this.signUpForm.get('name').value.trim();
+            const firstName = this.signUpForm.get('firstName').value.trim();
+            const lastName = this.signUpForm.get('lastName').value.trim();
             const email = this.signUpForm.get('email').value.trim();
             const password = this.signUpForm.get('password').value;
 
             this.progressBarMode = 'indeterminate';
-            await this.authService.signup({ name, email, password });
-            this.progressBarMode = '';
+            try {                
+                await this.authService.signup({ firstName, lastName, email, password });
+            } catch (error) {
+                if (error instanceof WrongCredentialError) { 
+                    this.signUpForm.setErrors({ userPass: true });
+                 } else { throw error;  }
+            }finally{
+                this.progressBarMode = '';
+            }
         }
     }
 

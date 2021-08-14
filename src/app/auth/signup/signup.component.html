@@ -11,13 +11,24 @@
 
             <mat-card-content>
                 <mat-form-field class="container" appearance="outline">
-                    <input type="name" matInput placeholder="Name" formControlName="name" autocomplete="name">
-                    <mat-error *ngIf="signUpForm.controls['name'].hasError('required')">
+                    <input type="firstName" matInput placeholder="First Name" formControlName="firstName" autocomplete="firstName">
+                    <mat-error *ngIf="signUpForm.controls['firstName'].hasError('required')">
+                        First Name <strong>required</strong>
+                    </mat-error>
+                    <mat-error
+                        *ngIf="(signUpForm.controls['firstName'].hasError('pattern') || signUpForm.controls['firstName'].hasError('minlength')) && !signUpForm.controls['firstName'].hasError('required')">
+                        Not a valid <strong>First Name</strong>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="container" appearance="outline">
+                    <input type="lastName" matInput placeholder="Last Name" formControlName="lastName" autocomplete="lastName">
+                    <mat-error *ngIf="signUpForm.controls['lastName'].hasError('required')">
                         Name <strong>required</strong>
                     </mat-error>
                     <mat-error
-                        *ngIf="(signUpForm.controls['name'].hasError('pattern') || signUpForm.controls['name'].hasError('minlength')) && !signUpForm.controls['name'].hasError('required')">
-                        Not a valid <strong>Name</strong>
+                        *ngIf="(signUpForm.controls['lastName'].hasError('pattern') || signUpForm.controls['lastName'].hasError('minlength')) && !signUpForm.controls['lastName'].hasError('required')">
+                        Not a valid <strong>Last Name</strong>
                     </mat-error>
                 </mat-form-field>
 

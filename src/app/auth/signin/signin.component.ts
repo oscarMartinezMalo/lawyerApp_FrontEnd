@@ -44,7 +44,6 @@ export class SigninComponent {
                 await this.authService.login({ email, password });
             } catch (error) {               
                 if (error instanceof WrongCredentialError) { 
-                    console.log("here");
                     this.signForm.setErrors({ userPass: true });
                  } else { throw error;  }
             } finally{
