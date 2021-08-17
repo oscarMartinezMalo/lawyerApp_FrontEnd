@@ -22,6 +22,7 @@ interface SignUpUser {
 
 interface LoginResponse {
   id: string;
+  firstName: string;
   email: string;
   role: string;
   accessToken: string;
@@ -48,24 +49,24 @@ export class AuthService {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    // this.getUser().subscribe(user => { this.user$.next(user as User); });
+    this.getUser().subscribe(user => { this.user$.next(user as User); });
   }
 
   getUser() {
-    // return this.http.get(this.BASE_URL).pipe(
-    //   catchError((error: Response) => {
-    //   return of(null);
-    // }), map(user => {
-    //   return user;
-    // }));
+    return this.http.get(this.BASE_URL+ 'account/getUser').pipe(
+      catchError((error: Response) => {
+      return of(null);
+    }), map(user => {
+      return user;
+    }));
   }
 
   async signup(emailPassword: SignUpUser) {
     await this.http.post(this.BASE_URL + 'account/signup', emailPassword).
       pipe(take(1),
         catchError((error: Response) => {
-          if (error.status === 403) {
-            return throwError(new UserExitsError());
+          if(error.status === 400) {
+            return throwError(new UserExitsError(error));
           }
           return throwError(new AppError(error));
         })).toPromise();
@@ -78,7 +79,7 @@ export class AuthService {
       pipe(take(1), map((token: LoginResponse) => {
         localStorage.setItem(this.JWT_TOKEN, token.accessToken);
         localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
-        this.user$.next({ id: token.id, email: token.email, role: token.role });
+        this.user$.next({ id: token.id, firstName: token.firstName, email: token.email, role: token.role });
         this.router.navigate([returnUrl]);
       }),
         catchError((error: Response) => {

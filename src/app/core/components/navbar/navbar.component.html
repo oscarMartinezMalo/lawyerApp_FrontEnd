@@ -22,17 +22,17 @@
             </button>
         </div>
 
-        <div *ngIf="(authService.user$ | async) as User">
+        <div *ngIf="(authService.user$ | async) as user">
             <button mat-button class="example-icon" [matMenuTriggerFor]="menu">
                 <mat-icon class="material-icons md-dark" style="margin-right: 5px;">account_circle</mat-icon>
-                <span class="user" *ngIf='!(isHandset$ | async)'>Oscar</span>
+                <span class="user" *ngIf='!(isHandset$ | async)'>{{user.firstName}}</span>
                 <!-- <img class="user-photo" aria-hidden [src]="resolvePhotoUrl()" /> -->
             </button>
 
             <mat-menu #menu="matMenu">
                 <button type="button" routerLinkActive="active" mat-menu-item *ngIf='(isHandset$ | async)'
                     fxLayoutAlign="center center">
-                    <span>Hello Oscar</span>
+                    <span>Hello {{user.firstName}}</span>
                 </button>
 
                 <!-- <button type="button" routerLinkActive="active" mat-menu-item class="example-icon">
@@ -57,7 +57,7 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
-    
+
     <mat-sidenav #drawer class="sidenav" color="primary" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
         [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)"
         *ngIf="authService.user$ | async">

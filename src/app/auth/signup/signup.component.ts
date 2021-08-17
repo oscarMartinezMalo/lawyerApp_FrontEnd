@@ -4,6 +4,9 @@ import { AuthService } from '../../shared/services/auth.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppError } from 'src/app/shared/errors/app-error';
 import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-error';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserExitsError } from 'src/app/shared/errors/user-exits-error';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signup',
@@ -14,6 +17,7 @@ export class SignupComponent {
 
     public progressBarMode = '';
     hasUnitNumber = false;
+    formErrors: {code:string, description: string}[] = [];
 
     signUpForm = this.fb.group({
         firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ']*")]],
@@ -24,7 +28,8 @@ export class SignupComponent {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) { }
 
     async onSubmit() {
@@ -37,9 +42,12 @@ export class SignupComponent {
             this.progressBarMode = 'indeterminate';
             try {                
                 await this.authService.signup({ firstName, lastName, email, password });
+                this.router.navigate(['/signin']);
             } catch (error) {
-                if (error instanceof WrongCredentialError) { 
-                    this.signUpForm.setErrors({ userPass: true });
+                if (error instanceof UserExitsError) {
+                    this.signUpForm.setErrors({ accountExitorPasswordComplexity: true });
+                    this.formErrors = error.getErrorListMessage();
+                    console.log(this.formErrors[0].description);
                  } else { throw error;  }
             }finally{
                 this.progressBarMode = '';

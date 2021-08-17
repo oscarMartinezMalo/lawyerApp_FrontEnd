@@ -4,6 +4,12 @@
 
 <div class="container-wrapper">
     <mat-card class="mat-custom-authen">
+        <!-- *ngIf="signUpForm.hasError('accountExitorPasswordComplexity')" -->
+        <div *ngFor="let oneError of formErrors" class="error-message" div fxLayout="row" fxLayoutAlign="start center"> 
+            <strong> {{oneError.description}}</strong>
+        </div>
+    
+
         <form [formGroup]="signUpForm" novalidate (ngSubmit)="onSubmit()">
             <div fxLayout="row" fxLayoutAlign="start center">
                 <h2 style="font-weight: 900;">Sign-Up</h2>

@@ -4,7 +4,12 @@ export class  AppError {
   public getErrorMessage(): any {
     if ( this.originalError ) {
       return this.originalError.error.message;
-      // return this.originalError;
+    }
+  }
+
+  public getErrorListMessage(): any {
+    if ( this.originalError ) {
+      return this.originalError.error.errors;
     }
   }
 }
