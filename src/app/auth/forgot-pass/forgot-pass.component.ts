@@ -13,7 +13,7 @@ export class ForgotPassComponent {
   public progressBarMode = '';
   hasUnitNumber = false;
 
-  signForm = this.fb.group({
+  forgotPasswordForm = this.fb.group({
       email: ['', Validators.compose([Validators.required, this.emailValid()])],
   });
 
@@ -24,13 +24,14 @@ export class ForgotPassComponent {
   ) { }
 
   async onSubmit() {
-      if (this.signForm.valid && this.signForm.touched) {
-          const email = this.signForm.get('email').value.trim();
+      if (this.forgotPasswordForm.valid && this.forgotPasswordForm.touched) {
+          const email = this.forgotPasswordForm.get('email').value.trim();
 
           this.progressBarMode = 'indeterminate';
           try {
             await this.authService.forgotPassword(email);
-            this.signForm.reset();   
+            this.forgotPasswordForm.reset();  
+            this.forgotPasswordForm.get('email').setErrors(null);             
           } catch (error) {
               
           } finally{

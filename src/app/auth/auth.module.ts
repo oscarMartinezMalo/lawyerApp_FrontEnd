@@ -16,6 +16,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ResetPassowrdComponent } from './reset-passowrd/reset-passowrd.component';
+import { ForgotPasswordTokenComponent } from './forgot-password-token/forgot-password-token.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     SignupComponent,
     ForgotPassComponent,
     UpdateUserComponent,
-    ProfileComponent],
+    ProfileComponent,
+    ResetPassowrdComponent,
+    ForgotPasswordTokenComponent],
   imports: [
     CommonModule,
     MatInputModule,
@@ -38,9 +42,9 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     RouterModule.forChild([
       { path: 'signin', component: SigninComponent },
       { path: 'signup', component: SignupComponent },
-      { path: 'forgot-password', component: ForgotPassComponent },
+      { path: 'forgot-password', component: ForgotPassComponent },      
+      { path: 'forgot-password-token', component: ForgotPasswordTokenComponent }
       // { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
-      // { path: 'forgot-password-token/:token', component: ForgotPasswordTokenComponent }
     ])
   ]
 })

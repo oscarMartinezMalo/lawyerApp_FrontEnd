@@ -127,16 +127,16 @@ export class AuthService {
   forgotPasswordToken(email: string, newPassword: string, forgotPasswordToken: string) {
     console.log("Forgot PasswordToken service was called");
 
-    // return this.http.put(this.BASE_URL + 'forgotPasswordToken', {email, newPassword, forgotPasswordToken}).
-    //   pipe(take(1), map((resp: any) => {
-    //     return resp;
-    //   }),
-    //     catchError((error: Response) => {
-    //       if (error.status === 403 || error.status === 401) {
-    //         return throwError(new WrongCredentialError());
-    //       }
-    //       return throwError(new AppError(error));
-    //     }));
+    return this.http.put(this.BASE_URL + 'forgotPasswordToken', {email, newPassword, forgotPasswordToken}).
+      pipe(take(1), map((resp: any) => {
+        return resp;
+      }),
+        catchError((error: Response) => {
+          if (error.status === 403 || error.status === 401) {
+            return throwError(new WrongCredentialError());
+          }
+          return throwError(new AppError(error));
+        }));
   }
 
   refreshToken() {
