@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { catchError, map, take, tap } from 'rxjs/operators';
@@ -38,7 +39,7 @@ interface ResetPassword {
   providedIn: 'root'
 })
 export class AuthService {
-  readonly BASE_URL = `${environment.baseUrl}api/`;
+  readonly BASE_URL = `${environment.baseUrl}api/account/`;
   readonly JWT_TOKEN = 'JWT_TOKEN';
   readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
   // Set to Undefined to check in the Guard when refresh the page
@@ -47,13 +48,14 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.getUser().subscribe(user => { this.user$.next(user as User); });
   }
 
   getUser() {
-    return this.http.get(this.BASE_URL+ 'account/getUser').pipe(
+    return this.http.get(this.BASE_URL+ 'getUser').pipe(
       catchError((error: Response) => {
       return of(null);
     }), map(user => {
@@ -62,7 +64,7 @@ export class AuthService {
   }
 
   async signup(emailPassword: SignUpUser) {
-    await this.http.post(this.BASE_URL + 'account/signup', emailPassword).
+    await this.http.post(this.BASE_URL + 'signup', emailPassword).
       pipe(take(1),
         catchError((error: Response) => {
           if(error.status === 400) {
@@ -75,7 +77,7 @@ export class AuthService {
   async login(emailPassword: EmailPassword) {
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
 
-    await this.http.post(this.BASE_URL + 'account/signin', emailPassword).
+    await this.http.post(this.BASE_URL + 'signin', emailPassword).
       pipe(take(1), map((token: LoginResponse) => {
         localStorage.setItem(this.JWT_TOKEN, token.accessToken);
         localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
@@ -108,19 +110,18 @@ export class AuthService {
     //     }));
   }
 
-  forgotPassword( email: string){
-    console.log("Forgot service was called", email);
+  async forgotPassword( email: string){
 
-    // return this.http.put(this.BASE_URL + 'forgotPassword', {email}).
-    //   pipe(take(1), map((resp: any) => {
-    //     return resp;
-    //   }),
-    //     catchError((error: Response) => {
-    //       if (error.status === 403) {
-    //         return throwError(new WrongCredentialError());
-    //       }
-    //       return throwError(new AppError(error));
-    //     }));
+    await this.http.put(this.BASE_URL + 'forgotPassword', {email}).
+      pipe(take(1), map((resp: any) => {
+        return resp;
+      }),
+        catchError((error: Response) => {
+          return throwError(new AppError(error));
+        })).toPromise();
+
+        this.snackBar.open('A Reset link was send to your email.','X', { duration: 8000 }
+      );
   }
 
   forgotPasswordToken(email: string, newPassword: string, forgotPasswordToken: string) {
@@ -139,12 +140,12 @@ export class AuthService {
   }
 
   refreshToken() {
-    // const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
+    const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
 
-    // return this.http.post(this.BASE_URL + 'refresh-token', { refreshToken }).
-    //   pipe(take(1), tap((token: { accessToken: string }) => {
-    //     localStorage.setItem(this.JWT_TOKEN, token.accessToken);
-    //   }));
+    return this.http.post(this.BASE_URL + 'refresh-token', { refreshToken }).
+      pipe(take(1), tap((token: { accessToken: string }) => {
+        localStorage.setItem(this.JWT_TOKEN, token.accessToken);
+      }));
   }
 
   get getStoredToken() {

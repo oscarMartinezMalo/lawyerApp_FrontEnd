@@ -28,8 +28,14 @@ export class ForgotPassComponent {
           const email = this.signForm.get('email').value.trim();
 
           this.progressBarMode = 'indeterminate';
-          await this.authService.forgotPassword(email);
-          this.progressBarMode = '';
+          try {
+            await this.authService.forgotPassword(email);
+            this.signForm.reset();   
+          } catch (error) {
+              
+          } finally{
+            this.progressBarMode = '';
+          }
       }
   }
 

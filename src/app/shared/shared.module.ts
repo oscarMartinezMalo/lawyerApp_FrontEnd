@@ -7,6 +7,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { AppErrorHandler } from './errors/app-error-handler';
 // import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 
 
 @NgModule({
@@ -26,7 +27,7 @@ import { AuthService } from './services/auth.service';
     // AuthGuard,
     AuthService,
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    // { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptorService, multi: true }
   ]
 })
 export class SharedModule { }
