@@ -18,6 +18,7 @@ import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ResetPassowrdComponent } from './reset-passowrd/reset-passowrd.component';
 import { ForgotPasswordTokenComponent } from './forgot-password-token/forgot-password-token.component';
+import { ConfirmValidatorDirective } from './confirm-validator.directive';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { ForgotPasswordTokenComponent } from './forgot-password-token/forgot-pas
     UpdateUserComponent,
     ProfileComponent,
     ResetPassowrdComponent,
-    ForgotPasswordTokenComponent],
+    ForgotPasswordTokenComponent,
+    ConfirmValidatorDirective
+  ],
   imports: [
     CommonModule,
     MatInputModule,

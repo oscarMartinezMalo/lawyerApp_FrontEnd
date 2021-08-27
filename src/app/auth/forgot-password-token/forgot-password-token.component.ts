@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppError } from 'src/app/shared/errors/app-error';
 import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-error';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { ConfirmValidatorDirective } from '../confirm-validator.directive';
 
 @Component({
   selector: 'app-forgot-password-token',
@@ -19,8 +20,8 @@ export class ForgotPasswordTokenComponent implements OnInit {
 
   resetPasswordForm = this.fb.group({
     email: ['', [Validators.required, this.emailValid()]],
-    newPassword: ['', [Validators.required, Validators.minLength(6)]],
-    retypePassword: ['', [Validators.required, Validators.minLength(6)]],
+    newPassword: ['', [Validators.required, Validators.minLength(4)]],
+    retypePassword: ['', [Validators.required, Validators.minLength(4)]],
   });
   
   constructor(    
