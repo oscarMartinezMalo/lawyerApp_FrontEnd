@@ -42,32 +42,33 @@ export class ForgotPasswordTokenComponent implements OnInit {
   }
 
 
-  onSubmit() {  
+  async onSubmit() {  
     this.resetPasswordForm.get('email').markAsTouched();
     this.resetPasswordForm.get('newPassword').markAsTouched();
     this.resetPasswordForm.get('retypePassword').markAsTouched();
     this.messageSuccess = '';
     this.messageError ='';
-    // if (this.resetPasswordForm.valid && this.resetPasswordForm.touched) {
-    //   const email = this.resetPasswordForm.get('email').value.trim();
-    //   const newPassword = this.resetPasswordForm.get('newPassword').value.trim();
 
-    //   this.authService.forgotPasswordToken(email, newPassword, forgotPasswordToken)
-    //   .subscribe(async resp => {        
-    //     this.resetPasswordForm.get('newPassword').reset();
-    //     this.resetPasswordForm.get('retypePassword').reset();
-    //     this.messageSuccess = resp.message;
-    //   },
-    //   (error: AppError) => {
-    //     if (error instanceof WrongCredentialError) { 
-    //       this.messageError = 'Token invalid, expired or wrong email';
-    //      }else{
-    //        this.messageError = 'Something went wrong, password was not updated';
-    //      }
+    if (this.resetPasswordForm.valid && this.resetPasswordForm.touched) {
+      const email = this.resetPasswordForm.get('email').value.trim();
+      const newPassword = this.resetPasswordForm.get('newPassword').value.trim();
 
-    //      this.resetPasswordForm.get('newPassword').reset();
-    //      this.resetPasswordForm.get('retypePassword').reset();
-    //   });
-    // }
+      await this.authService.forgotPasswordToken(email, newPassword, this.forgotPasswordToken);
+      // .subscribe(async resp => {        
+      //   this.resetPasswordForm.get('newPassword').reset();
+      //   this.resetPasswordForm.get('retypePassword').reset();
+      //   this.messageSuccess = resp.message;
+      // },
+      // (error: AppError) => {
+      //   if (error instanceof WrongCredentialError) { 
+      //     this.messageError = 'Token invalid, expired or wrong email';
+      //    } else {
+      //      this.messageError = 'Something went wrong, password was not updated';
+      //    }
+
+      //    this.resetPasswordForm.get('newPassword').reset();
+      //    this.resetPasswordForm.get('retypePassword').reset();
+      // });
+    }
   }
 }

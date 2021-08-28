@@ -124,10 +124,8 @@ export class AuthService {
       );
   }
 
-  forgotPasswordToken(email: string, newPassword: string, forgotPasswordToken: string) {
-    console.log("Forgot PasswordToken service was called");
-
-    return this.http.put(this.BASE_URL + 'forgotPasswordToken', {email, newPassword, forgotPasswordToken}).
+  async forgotPasswordToken(email: string, password: string, forgotPasswordToken: string) {
+    await this.http.post(this.BASE_URL + 'forgotPasswordToken', {email, password, forgotPasswordToken}).
       pipe(take(1), map((resp: any) => {
         return resp;
       }),
@@ -136,7 +134,7 @@ export class AuthService {
             return throwError(new WrongCredentialError());
           }
           return throwError(new AppError(error));
-        }));
+        })).toPromise();
   }
 
   refreshToken() {
