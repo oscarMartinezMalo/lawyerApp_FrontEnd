@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-forgot-pass',
@@ -20,6 +21,7 @@ export class ForgotPassComponent {
   constructor(
       private fb: FormBuilder,
       private authService: AuthService,
+      private snackBar: MatSnackBar
       // private sharedService: SharedService
   ) { }
 
@@ -30,6 +32,9 @@ export class ForgotPassComponent {
           this.progressBarMode = 'indeterminate';
           try {
             await this.authService.forgotPassword(email);
+            
+            this.snackBar.open('A reset password link was send to your email.','X', { duration: 8000 } );
+
             this.forgotPasswordForm.reset();  
             this.forgotPasswordForm.get('email').setErrors(null);             
           } catch (error) {

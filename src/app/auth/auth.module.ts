@@ -19,6 +19,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ResetPassowrdComponent } from './reset-passowrd/reset-passowrd.component';
 import { ForgotPasswordTokenComponent } from './forgot-password-token/forgot-password-token.component';
 import { ConfirmValidatorDirective } from './confirm-validator.directive';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ConfirmValidatorDirective } from './confirm-validator.directive';
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
+    MatIconModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     FormsModule,

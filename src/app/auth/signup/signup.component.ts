@@ -18,6 +18,7 @@ export class SignupComponent {
     public progressBarMode = '';
     hasUnitNumber = false;
     formErrors: {code:string, description: string}[] = [];
+    hidePassword = true;
 
     signUpForm = this.fb.group({
         firstName: ['', [Validators.required, Validators.minLength(3), Validators.pattern("^[a-zA-Z ']*")]],

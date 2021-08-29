@@ -14,6 +14,7 @@ import { AuthService } from '../../shared/services/auth.service';
 export class SigninComponent {
     public progressBarMode = '';
     hasUnitNumber = false;
+    hidePassword = true;
 
     signForm = this.fb.group({
         email: ['', Validators.compose([Validators.required, this.emailValid()])],

@@ -111,7 +111,6 @@ export class AuthService {
   }
 
   async forgotPassword( email: string){
-
     await this.http.put(this.BASE_URL + 'forgotPassword', {email}).
       pipe(take(1), map((resp: any) => {
         return resp;
@@ -119,17 +118,16 @@ export class AuthService {
         catchError((error: Response) => {
           return throwError(new AppError(error));
         })).toPromise();
-
-        this.snackBar.open('A Reset link was send to your email.','X', { duration: 8000 }
-      );
   }
 
   async forgotPasswordToken(email: string, password: string, forgotPasswordToken: string) {
     await this.http.post(this.BASE_URL + 'forgotPasswordToken', {email, password, forgotPasswordToken}).
       pipe(take(1), map((resp: any) => {
+        console.log("Here");
         return resp;
       }),
         catchError((error: Response) => {
+          console.log(error);
           if (error.status === 403 || error.status === 401) {
             return throwError(new WrongCredentialError());
           }
@@ -139,7 +137,7 @@ export class AuthService {
 
   refreshToken() {
     const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
-
+    
     return this.http.post(this.BASE_URL + 'refresh-token', { refreshToken }).
       pipe(take(1), tap((token: { accessToken: string }) => {
         localStorage.setItem(this.JWT_TOKEN, token.accessToken);
@@ -151,8 +149,6 @@ export class AuthService {
   }
 
   async logOut() {
-    console.log("Logout service was called");
-
     // const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
     // this.http.delete(this.BASE_URL + refreshToken).pipe(
     //   catchError((error: Response) => {

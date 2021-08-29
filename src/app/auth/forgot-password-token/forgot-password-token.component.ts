@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppError } from 'src/app/shared/errors/app-error';
 import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-error';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -17,6 +18,7 @@ export class ForgotPasswordTokenComponent implements OnInit {
   messageError: string;
   formErrors: {code:string, description: string}[] = [];
   forgotPasswordToken: string;
+  hidePassword = true;
 
   resetPasswordForm = this.fb.group({
     email: ['', [Validators.required, this.emailValid()]],
@@ -27,7 +29,9 @@ export class ForgotPasswordTokenComponent implements OnInit {
   constructor(    
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private authService: AuthService) { 
+    private authService: AuthService,
+    private snackBar: MatSnackBar,    
+    private router: Router,) { 
   }
   ngOnInit(): void {    
     this.forgotPasswordToken = this.route.snapshot.queryParamMap.get('token');
@@ -41,7 +45,6 @@ export class ForgotPasswordTokenComponent implements OnInit {
     };
   }
 
-
   async onSubmit() {  
     this.resetPasswordForm.get('email').markAsTouched();
     this.resetPasswordForm.get('newPassword').markAsTouched();
@@ -52,23 +55,22 @@ export class ForgotPasswordTokenComponent implements OnInit {
     if (this.resetPasswordForm.valid && this.resetPasswordForm.touched) {
       const email = this.resetPasswordForm.get('email').value.trim();
       const newPassword = this.resetPasswordForm.get('newPassword').value.trim();
+      this.progressBarMode = 'indeterminate';
 
-      await this.authService.forgotPasswordToken(email, newPassword, this.forgotPasswordToken);
-      // .subscribe(async resp => {        
-      //   this.resetPasswordForm.get('newPassword').reset();
-      //   this.resetPasswordForm.get('retypePassword').reset();
-      //   this.messageSuccess = resp.message;
-      // },
-      // (error: AppError) => {
-      //   if (error instanceof WrongCredentialError) { 
-      //     this.messageError = 'Token invalid, expired or wrong email';
-      //    } else {
-      //      this.messageError = 'Something went wrong, password was not updated';
-      //    }
+      try {
+         await this.authService.forgotPasswordToken(email, newPassword, this.forgotPasswordToken);
+         this.snackBar.open('Password successfully changed', 'X', { duration: 20000, panelClass: ['green-snackbar'] });
+         this.router.navigate(['/signin']);
+      } catch (error) {
 
-      //    this.resetPasswordForm.get('newPassword').reset();
-      //    this.resetPasswordForm.get('retypePassword').reset();
-      // });
+        if (error instanceof WrongCredentialError) {
+          this.snackBar.open('Token invalid, expired or wrong email', 'X', {duration: 20000, panelClass: ['red-snackbar'] });
+         }
+
+        this.snackBar.open('Something went wrong, password was not updated', 'X', {duration: 20000,panelClass: ['red-snackbar']});         
+      } finally {
+        this.progressBarMode = '';
+      }
     }
   }
 }
