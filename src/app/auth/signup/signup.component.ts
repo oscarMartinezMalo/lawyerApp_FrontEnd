@@ -7,6 +7,7 @@ import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-er
 import { HttpErrorResponse } from '@angular/common/http';
 import { UserExitsError } from 'src/app/shared/errors/user-exits-error';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
     selector: 'app-signup',
@@ -30,7 +31,8 @@ export class SignupComponent {
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private snackBar: MatSnackBar
     ) { }
 
     async onSubmit() {
@@ -43,6 +45,8 @@ export class SignupComponent {
             this.progressBarMode = 'indeterminate';
             try {                
                 await this.authService.signup({ firstName, lastName, email, password });
+                
+                this.snackBar.open('User was successfuly created, now you can Sign In', 'X', { duration: 20000, panelClass: ['green-snackbar'] });
                 this.router.navigate(['/signin']);
             } catch (error) {
                 if (error instanceof UserExitsError) {

@@ -23,7 +23,7 @@ export class SigninComponent {
 
     constructor(
         private fb: FormBuilder,
-        private authService: AuthService,
+        private authService: AuthService
         // private sharedService: SharedService
     ) { }
     emailValid() {
