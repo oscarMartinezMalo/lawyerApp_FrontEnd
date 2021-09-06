@@ -1,0 +1,38 @@
+<div class="example-container mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+    
+      <!-- Position Column -->
+      <ng-container matColumnDef="caseNumber">
+        <th mat-header-cell *matHeaderCellDef> Case Number. </th>
+        <td mat-cell *matCellDef="let case"> {{case.caseNumber}} </td>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let case"> {{case.type}} </td>
+      </ng-container>
+  
+      <!-- Weight Column -->
+      <ng-container matColumnDef="createdDate">
+        <th mat-header-cell *matHeaderCellDef> Created Date </th>
+        <td mat-cell *matCellDef="let case"> {{case.createdDate | date}} </td>
+      </ng-container>
+  
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="clientName">
+        <th mat-header-cell *matHeaderCellDef> Client Name </th>
+        <td mat-cell *matCellDef="let case"> {{case.client.firstName}} {{case.client.lastName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> <mat-icon>delete</mat-icon> </th>
+        <td mat-cell *matCellDef="let element" style="cursor: pointer">
+            <mat-icon (click)="onDelete(element)">delete</mat-icon>
+        </td>
+    </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
