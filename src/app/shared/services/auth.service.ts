@@ -123,11 +123,9 @@ export class AuthService {
   async forgotPasswordToken(email: string, password: string, forgotPasswordToken: string) {
     await this.http.post(this.BASE_URL + 'forgotPasswordToken', {email, password, forgotPasswordToken}).
       pipe(take(1), map((resp: any) => {
-        console.log("Here");
         return resp;
       }),
         catchError((error: Response) => {
-          console.log(error);
           if (error.status === 403 || error.status === 401) {
             return throwError(new WrongCredentialError());
           }
@@ -159,5 +157,6 @@ export class AuthService {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
     this.user$.next(null);
+    this.router.navigate(['home']);
   }
 }

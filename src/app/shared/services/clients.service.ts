@@ -23,7 +23,6 @@ export class ClientsService {
     private snackBar: MatSnackBar
     ) { }
 
-
   getClientsByQueryObservable(clientNameQuery: string): Observable<Client[]>{
     const params = new HttpParams({fromString: `query=${clientNameQuery}`});
     return this.http.get(this.BASE_URL, { params }) as Observable<Client[]>;

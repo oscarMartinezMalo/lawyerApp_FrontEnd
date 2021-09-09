@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs/operators';
 import { RequireMatch } from 'src/app/shared/directives/requireMatch.Validator';
 import { Case } from 'src/app/shared/models/case.model';
 import { Client } from 'src/app/shared/models/client.model';
+import { CasesService } from 'src/app/shared/services/cases.service';
 import { ClientsService } from 'src/app/shared/services/clients.service';
 
 @Component({
@@ -15,6 +17,8 @@ import { ClientsService } from 'src/app/shared/services/clients.service';
   styleUrls: ['./case-form.component.scss']
 })
 export class CaseFormComponent implements OnInit {
+ 
+  public progressBarMode = '';
   caseForm: FormGroup;
   
   filteredOptions: Observable<Client[]>;
@@ -23,7 +27,9 @@ export class CaseFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public router: Router,
-    private clientsService: ClientsService
+    private snackBar: MatSnackBar,
+    private clientsService: ClientsService,
+    private casesService: CasesService
     ) { }
 
   async ngOnInit() {
@@ -49,7 +55,6 @@ export class CaseFormComponent implements OnInit {
   }  
 
   displayFn(clientArray: Client[]): (id: number) => string | null {
-    // return client ? client.firstName : undefined;
     return (id: number) => { 
       const correspondingOption = Array.isArray(clientArray) ? clientArray.find(option => option.id === id) : null;
       
@@ -59,7 +64,17 @@ export class CaseFormComponent implements OnInit {
 
   async onSubmit() {    
     if (this.caseForm.invalid) { return; }
-    console.log(this.caseForm.value);
-    this.router.navigate(['/event-list']);
+
+    this.progressBarMode = 'indeterminate';
+    try {
+        await this.casesService.saveCase(this.caseForm.value);
+        this.snackBar.open(`Case ${this.caseForm.get('caseNumber').value} was successfuly created`, 'X', { duration: 20000, panelClass: ['green-snackbar'] });
+        this.router.navigate(['/case-list']);
+    } catch (error) {
+        throw error; 
+    } finally {
+        this.progressBarMode = '';
+    }
+
   }
 }

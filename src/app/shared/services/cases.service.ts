@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { AppError } from '../errors/app-error';
 import { UserExitsError } from '../errors/user-exits-error';
 import { Case } from '../models/case.model';
+import { SaveCase } from '../models/save-case.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,16 @@ export class CasesService {
         })).toPromise();
 
         return cases as Case[];
+    }
+
+    async saveCase(newCase: SaveCase){
+      await this.http.post(this.BASE_URL , newCase).
+        pipe(take(1),
+        catchError((error: Response) => {
+          if(error.status === 400) {
+            return throwError(new UserExitsError(error));
+          }
+          return throwError(new AppError(error));
+        })).toPromise();
     }
 }
