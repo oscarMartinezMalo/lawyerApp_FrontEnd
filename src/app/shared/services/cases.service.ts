@@ -36,6 +36,19 @@ export class CasesService {
         return cases as Case[];
     }
 
+    async getCaseById(Id: string): Promise<Case> {
+      let caseByID = await this.http.get(this.BASE_URL + Id).
+      pipe(take(1),
+        catchError((error: Response) => {
+          if(error.status === 400) {
+            return throwError(new UserExitsError(error));
+          }
+          return throwError(new AppError(error));
+        })).toPromise();
+
+      return caseByID as Case;
+    }
+
     async saveCase(newCase: SaveCase){
       await this.http.post(this.BASE_URL , newCase).
         pipe(take(1),
@@ -45,5 +58,13 @@ export class CasesService {
           }
           return throwError(new AppError(error));
         })).toPromise();
+    }
+
+    async deleteCaseFromLawyer(caseId: number){
+      await this.http.delete(this.BASE_URL + caseId).
+      pipe(take(1),
+      catchError((error: Response) => {
+        return throwError(new AppError(error));
+      })).toPromise();
     }
 }

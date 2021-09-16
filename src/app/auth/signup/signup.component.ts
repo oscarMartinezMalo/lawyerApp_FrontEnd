@@ -52,7 +52,6 @@ export class SignupComponent {
                 if (error instanceof UserExitsError) {
                     this.signUpForm.setErrors({ accountExitorPasswordComplexity: true });
                     this.formErrors = error.getErrorListMessage();
-                    console.log(this.formErrors[0].description);
                  } else { throw error;  }
             }finally{
                 this.progressBarMode = '';

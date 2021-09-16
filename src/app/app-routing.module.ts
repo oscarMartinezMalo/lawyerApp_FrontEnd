@@ -2,12 +2,18 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { CaseFormComponent } from './lawyer/components/case-form/case-form.component';
 import { CaseListComponent } from './lawyer/components/case-list/case-list.component';
+import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
+import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
 
 
 const routes: Routes = [
-  { path: "new-case", component: CaseFormComponent},
-  { path: "case-list", component: CaseListComponent},
+  { path: "cases/new", component: CaseFormComponent},
+  { path: "cases/:id", component: CaseFormComponent},
+  { path: "cases", component: CaseListComponent},
+  { path: "clients/new", component: ClientFormComponent},
+  { path: "clients/:id", component: ClientFormComponent},
+  { path: "clients", component: ClientListComponent},
   { path: 'not_found', component: ErrorPageComponent, data: { message: 'This page can’t be reached'} },
   { path: '**', redirectTo: '/not_found' }
 ];

@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+import { DialogCustomComponent, DialogData } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
 import { Case } from 'src/app/shared/models/case.model';
 import { CasesService } from 'src/app/shared/services/cases.service';
 
@@ -9,20 +12,42 @@ import { CasesService } from 'src/app/shared/services/cases.service';
   styleUrls: ['./case-list.component.scss']
 })
 export class CaseListComponent implements OnInit {
-  title = 'Players withOut team';
   displayedColumns: string[] = ['caseNumber', 'type', 'createdDate', 'clientName', 'delete'];
-  public dataSource: Case[];
+
+  public dataSource;
   
   constructor(
-    private casesService: CasesService
-  ) { }
-
-  async ngOnInit() {
-    this.dataSource  = await this.casesService.getCaseListOfLawyer();
-    console.log(this.dataSource);
+    private casesService: CasesService,
+    private dialog: MatDialog,
+    private router: Router
+  ) { 
+    this.dataSource = new MatTableDataSource<Case>()
   }
 
-  onDelete(element){
-    // Delete Case
+  async ngOnInit() {
+    this.dataSource.data  = await this.casesService.getCaseListOfLawyer();
+  }
+
+  applyFilter(event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  onRowClick(row) {
+    this.router.navigate(['cases', row.id]);
+  }
+
+  async onDelete(caseToDelete: Case){
+    const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the case number ${caseToDelete.caseNumber}`);
+    const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
+
+    dialogRef.afterClosed().subscribe(async dialogResult => {
+      if (dialogResult) {
+        await this.casesService.deleteCaseFromLawyer(caseToDelete.id);
+        const index = this.dataSource.data.indexOf(caseToDelete);
+        console.log(index);
+        this.dataSource.data.splice(index, 1);
+        this.dataSource._updateChangeSubscription();
+      }});
   }
 }

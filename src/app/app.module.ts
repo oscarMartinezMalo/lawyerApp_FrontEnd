@@ -14,6 +14,9 @@ import { CoreModule } from './core/core.module';
 import { CaseListComponent } from './lawyer/components/case-list/case-list.component';
 import { CaseFormComponent } from './lawyer/components/case-form/case-form.component';
 import { ClientsDropdownComponent } from './shared/components/clients-dropdown/clients-dropdown.component';
+import { DialogCustomComponent } from './shared/components/dialog-custom/dialog-custom.component';
+import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
+import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import { ClientsDropdownComponent } from './shared/components/clients-dropdown/c
     CaseFormComponent,
     CaseListComponent,
     ClientsDropdownComponent,
+    DialogCustomComponent,
+    ClientFormComponent,
+    ClientListComponent,
   ],
   imports: [
     BrowserModule,
