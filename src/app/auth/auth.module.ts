@@ -20,6 +20,7 @@ import { ResetPassowrdComponent } from './reset-passowrd/reset-passowrd.componen
 import { ForgotPasswordTokenComponent } from './forgot-password-token/forgot-password-token.component';
 import { ConfirmValidatorDirective } from './confirm-validator.directive';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthGuard } from '../shared/services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,8 @@ import { MatIconModule } from '@angular/material/icon';
     RouterModule.forChild([
       { path: 'signin', component: SigninComponent },
       { path: 'signup', component: SignupComponent },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: 'reset-password', component: ResetPassowrdComponent, canActivate: [AuthGuard] },
       { path: 'forgot-password', component: ForgotPassComponent },      
       { path: 'forgot-password-token', component: ForgotPasswordTokenComponent }
       // { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },

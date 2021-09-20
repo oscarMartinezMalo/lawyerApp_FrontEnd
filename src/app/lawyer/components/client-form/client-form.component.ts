@@ -12,7 +12,8 @@ import { ClientsService } from 'src/app/shared/services/clients.service';
 })
 export class ClientFormComponent implements OnInit {
 
-  public progressBarMode = '';
+  title = 'CREATE NEW CLIENT';
+  progressBarMode = '';
   clientForm: FormGroup;
   clientIdUrl: string;
 
@@ -25,19 +26,21 @@ export class ClientFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.fillForm();
-
     this.clientForm = this.fb.group({
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       address: [null, Validators.required],
       phone: [null, [Validators.required]]
     });
+    
+    this.fillFormEdit();
   }
 
-  private async fillForm() {    
+  private async fillFormEdit() {    
     this.clientIdUrl = this.route.snapshot.paramMap.get('id');
+
     if ( this.clientIdUrl ) {
+      this.title = "EDIT CLIENT";
       let clientToEdit = await this.clientsService.getClientById(this.clientIdUrl);
 
       this.clientForm.patchValue({

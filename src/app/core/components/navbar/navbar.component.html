@@ -42,8 +42,12 @@
 
                 <button type="button" routerLinkActive="active" mat-menu-item class="example-icon"
                     routerLink="/profile">
-                    <mat-icon class="material-icons md-dark ">build</mat-icon>
                     <span>Profile</span>
+                </button>
+
+                <button type="button" routerLinkActive="active" mat-menu-item class="example-icon"
+                    routerLink="/reset-password">
+                    <span>Reset Password</span>
                 </button>
 
                 <button type="button" routerLinkActive="active" mat-menu-item (click)="authService.logOut()">

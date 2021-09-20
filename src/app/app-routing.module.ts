@@ -5,15 +5,16 @@ import { CaseListComponent } from './lawyer/components/case-list/case-list.compo
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
+import { AuthGuard } from './shared/services/auth-guard.service';
 
 
 const routes: Routes = [
-  { path: "cases/new", component: CaseFormComponent},
-  { path: "cases/:id", component: CaseFormComponent},
-  { path: "cases", component: CaseListComponent},
-  { path: "clients/new", component: ClientFormComponent},
-  { path: "clients/:id", component: ClientFormComponent},
-  { path: "clients", component: ClientListComponent},
+  { path: "cases/new", component: CaseFormComponent, canActivate: [AuthGuard]},
+  { path: "cases/:id", component: CaseFormComponent, canActivate: [AuthGuard]},
+  { path: "cases", component: CaseListComponent, canActivate: [AuthGuard]},
+  { path: "clients/new", component: ClientFormComponent, canActivate: [AuthGuard]},
+  { path: "clients/:id", component: ClientFormComponent, canActivate: [AuthGuard]},
+  { path: "clients", component: ClientListComponent, canActivate: [AuthGuard]},
   { path: 'not_found', component: ErrorPageComponent, data: { message: 'This page can’t be reached'} },
   { path: '**', redirectTo: '/not_found' }
 ];

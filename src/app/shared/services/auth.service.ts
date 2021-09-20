@@ -32,7 +32,8 @@ interface LoginResponse {
 
 interface ResetPassword {
   currentPassword: string,
-  newPassword: string
+  newPassword: string,
+  retypePassword: string
 }
 
 @Injectable({
@@ -94,7 +95,7 @@ export class AuthService {
   }
 
   resetPassword(resetPassword: ResetPassword ){
-    console.log("Resert service was called");
+    console.log("Resert service was called", resetPassword);
 
     // return this.http.put(this.BASE_URL + 'resetPassword', resetPassword).
     //   pipe(take(1), map((token: LoginResponse) => {
@@ -147,13 +148,6 @@ export class AuthService {
   }
 
   async logOut() {
-    // const refreshToken = localStorage.getItem(this.REFRESH_TOKEN);
-    // this.http.delete(this.BASE_URL + refreshToken).pipe(
-    //   catchError((error: Response) => {
-    //     return throwError(new AppError(error));
-    //   }))
-    // .subscribe();
-
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
     this.user$.next(null);

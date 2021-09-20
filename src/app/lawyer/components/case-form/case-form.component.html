@@ -7,7 +7,7 @@
     
     <mat-card class="create-event-card" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
         <mat-toolbar color="primary" fxLayoutAlign="center center">
-            <span>CREATE NEW CASE</span>
+            <span>{{ title }}</span>
         </mat-toolbar>
 
         <mat-card-content style="padding: 0px 10px 0px 10px;">
@@ -51,8 +51,9 @@
                   
 
         <mat-card-actions style="padding: 0px;">
-            <button mat-flat-button (click)="this.router.navigate(['/event-list'])">Cancel</button>
+            <button mat-flat-button (click)="this.router.navigate(['/cases'])">Cancel</button>
             <button mat-flat-button color="primary" type="submit"> Save </button>
+            <button mat-flat-button (click)="setValue()">Set Value</button>
         </mat-card-actions>
     </mat-card>
 
