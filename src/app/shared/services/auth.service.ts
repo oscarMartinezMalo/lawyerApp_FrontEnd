@@ -30,7 +30,7 @@ interface LoginResponse {
   refreshToken: string;
 }
 
-interface ResetPassword {
+interface ChangePassword {
   currentPassword: string,
   newPassword: string,
   retypePassword: string
@@ -94,21 +94,18 @@ export class AuthService {
         })).toPromise();
   }
 
-  resetPassword(resetPassword: ResetPassword ){
-    console.log("Resert service was called", resetPassword);
-
-    // return this.http.put(this.BASE_URL + 'resetPassword', resetPassword).
-    //   pipe(take(1), map((token: LoginResponse) => {
-    //     // localStorage.setItem(this.JWT_TOKEN, token.accessToken);
-    //     // localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
-    //     // this.user$.next({ id: token.id, email: token.email, role: token.role });
-    //   }),
-    //     catchError((error: Response) => {
-    //       if (error.status === 403) {
-    //         return throwError(new WrongCredentialError());
-    //       }
-    //       return throwError(new AppError(error));
-    //     }));
+  async changePassword(changePassword: ChangePassword ){
+    await this.http.post(this.BASE_URL + 'changePassword', changePassword).
+      pipe(take(1), map((resp: any) => {
+        this.logOut();
+        return resp;
+      }),
+        catchError((error: Response) => {
+          if (error.status === 400) {
+            return throwError(new UserExitsError(error));
+          }
+          return throwError(new AppError(error));
+        })).toPromise();
   }
 
   async forgotPassword( email: string){
@@ -121,6 +118,7 @@ export class AuthService {
         })).toPromise();
   }
 
+  // The forgotPasswordToken is in the URL an we have to send it back to the server
   async forgotPasswordToken(email: string, password: string, forgotPasswordToken: string) {
     await this.http.post(this.BASE_URL + 'forgotPasswordToken', {email, password, forgotPasswordToken}).
       pipe(take(1), map((resp: any) => {
@@ -151,6 +149,6 @@ export class AuthService {
     localStorage.removeItem(this.JWT_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
     this.user$.next(null);
-    this.router.navigate(['home']);
+    this.router.navigate(['signin']);
   }
 }
