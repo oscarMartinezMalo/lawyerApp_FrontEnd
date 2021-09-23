@@ -21,7 +21,7 @@ import { TokenInterceptorService } from './services/token-interceptor.service';
   ],
   exports: [
     FormsModule,
-    ErrorPageComponent
+    ErrorPageComponent,
   ],
   providers: [
     // AuthGuard,

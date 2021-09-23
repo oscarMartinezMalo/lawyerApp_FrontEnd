@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { AppError } from '../errors/app-error';
@@ -21,9 +21,16 @@ interface SignUpUser {
   password: string;
 }
 
+interface UpdateProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 interface LoginResponse {
   id: string;
   firstName: string;
+  lastName: string;
   email: string;
   role: string;
   accessToken: string;
@@ -55,7 +62,7 @@ export class AuthService {
     this.getUser().subscribe(user => { this.user$.next(user as User); });
   }
 
-  getUser() {
+  getUser(): Observable<User> {
     return this.http.get(this.BASE_URL+ 'getUser').pipe(
       catchError((error: Response) => {
       return of(null);
@@ -75,18 +82,26 @@ export class AuthService {
         })).toPromise();
   }
 
+  async updateProfile(updateProfile: UpdateProfile){
+    await this.http.post(this.BASE_URL + 'updateProfile', updateProfile).
+    pipe(take(1),
+      catchError((error: Response) =>{
+        return throwError(error);
+      })
+    ).toPromise();  
+  }
+
   async login(emailPassword: EmailPassword) {
-    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/home';
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/cases';
 
     await this.http.post(this.BASE_URL + 'signin', emailPassword).
       pipe(take(1), map((token: LoginResponse) => {
         localStorage.setItem(this.JWT_TOKEN, token.accessToken);
         localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
-        this.user$.next({ id: token.id, firstName: token.firstName, email: token.email, role: token.role });
+        this.user$.next({ id: token.id, firstName: token.firstName, lastName: token.lastName, email: token.email, role: token.role });
         this.router.navigate([returnUrl]);
       }),
         catchError((error: Response) => {
-          console.log(error);
           if (error.status === 401) {
             return throwError(new WrongCredentialError());
           }

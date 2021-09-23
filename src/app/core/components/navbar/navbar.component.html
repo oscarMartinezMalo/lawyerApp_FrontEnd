@@ -31,8 +31,8 @@
 
             <mat-menu #menu="matMenu">
                 <button type="button" routerLinkActive="active" mat-menu-item *ngIf='(isHandset$ | async)'
-                    fxLayoutAlign="center center">
-                    <span>Hello {{user.firstName}}</span>
+                    fxLayoutAlign="center center" style="background-color: darkgray;">
+                    <span> <strong>{{user.firstName}}</strong> </span>
                 </button>
 
                 <!-- <button type="button" routerLinkActive="active" mat-menu-item class="example-icon">
@@ -42,7 +42,7 @@
 
                 <button type="button" routerLinkActive="active" mat-menu-item class="example-icon"
                     routerLink="/profile">
-                    <span>Profile</span>
+                    <span>Update Profile</span>
                 </button>
 
                 <button type="button" routerLinkActive="active" mat-menu-item class="example-icon"

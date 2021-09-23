@@ -1,1 +1,19 @@
-<p>home works!</p>
+<div class="home-container" fxLayout="row" fxLayout.lt-sm="column" fxFill>
+    <div class="image-section" fxFlex="60"  fxLayout="column" fxLayoutAlign="center center">
+        <!-- <img src="../../../assets/images/cover.svg" class="image-cover"> -->
+        <app-svg-home-image style="width: 90%;"></app-svg-home-image>
+    </div>
+
+    <div class="button-section" fxFlex="40" fxLayout="column" fxLayoutAlign="center center">
+        <div class="description"  fxLayout="column"  fxLayoutGap="30px">
+            <h1>Keep everything organized</h1>
+            <p>So even if you think you are a very disorganized person, you can learn to be organized.
+                <span fxHide.lt-sm> From planning things, jotting things down, to ditching the unnecessary and organizing,
+                things that matter, you will become an organized person.</span> 
+
+            </p>
+            <a class="action-button"  mat-flat-button color="primary" [routerLink]="['/signup']" >Join Today</a>
+        </div>
+
+    </div>
+</div>

@@ -17,6 +17,7 @@ import { ClientsDropdownComponent } from './shared/components/clients-dropdown/c
 import { DialogCustomComponent } from './shared/components/dialog-custom/dialog-custom.component';
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ClientListComponent } from './lawyer/components/client-list/client-list
     CoreModule,
     SharedModule,    
     AuthModule,    
+    AdminModule,
     AppRoutingModule,ReactiveFormsModule,
     FormsModule
   ],

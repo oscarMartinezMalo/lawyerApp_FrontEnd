@@ -4,12 +4,14 @@ import { HomeComponent } from './components/home/home.component';
 import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MaterialModulesModule } from '../material-modules.module';
+import { SvgHomeImageComponent } from './components/svg-home-image/svg-home-image.component';
 
 
 @NgModule({
   declarations: [
     NavbarComponent,
     HomeComponent,
+    SvgHomeImageComponent,
   ],
   imports: [
     CommonModule,

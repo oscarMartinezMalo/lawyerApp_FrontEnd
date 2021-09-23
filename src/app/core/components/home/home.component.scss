@@ -1,0 +1,47 @@
+@media (max-width: 959px) {
+    .image-section {
+        // border-right: 0px !important;
+    }
+}
+
+:host {
+    height: 100%;
+}
+
+.home-container {
+    // background-color: var(--accent);
+
+    .image-section {
+        // border-radius: 0px 50% 50% 0px;
+        // background-image:linear-gradient(to top, rgba(45, 46, 53, 0.5), rgba(17, 88, 94, 0.3)), url("/assets/images/boyPitching.jpg");
+        // background-size: cover;
+        // background-repeat: no-repeat;
+        // border: 0px;
+        // background-image: url("/assets/images/cover.svg");
+        .image-cover {
+            width: 80%;
+            height: auto;
+        }
+    }
+
+    .button-section {
+        padding: 20px;
+
+        .description {
+            max-width: 300px;
+        }
+
+        h1 {
+            color: var(--primary);
+        }
+
+        p {
+            color: var(--primary);
+        }
+    }
+}
+
+
+a.action-button{
+    border-radius: 50px;
+}
