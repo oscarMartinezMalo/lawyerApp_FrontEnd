@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DialogData, DialogCustomComponent } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
 import { Case } from 'src/app/shared/models/case.model';
-import { CasesService } from 'src/app/shared/services/cases.service';
+import { AdminService } from 'src/app/shared/services/admin.service';
 
 @Component({
   selector: 'app-role-list',
@@ -14,12 +15,14 @@ import { CasesService } from 'src/app/shared/services/cases.service';
 export class RoleListComponent implements OnInit {
 
 
-  displayedColumns: string[] = ['caseNumber', 'delete'];
+  displayedColumns: string[] = ['name', 'delete'];  
+  roleForm: FormGroup;
 
   public dataSource;
   
   constructor(
-    private casesService: CasesService,
+    private fb: FormBuilder,
+    private adminService: AdminService,
     private dialog: MatDialog,
     private router: Router
   ) { 
@@ -27,7 +30,12 @@ export class RoleListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.dataSource.data  = await this.casesService.getCaseListOfLawyer();
+    this.roleForm = this.fb.group({
+      roleName: [null],
+    });
+
+    this.dataSource.data  = await this.adminService.getRoleList();
+    console.log(this.dataSource.data);
   }
 
   applyFilter(event) {
@@ -36,20 +44,23 @@ export class RoleListComponent implements OnInit {
   }
 
   onRowClick(row) {
-    this.router.navigate(['cases', row.id]);
+    console.log(row);
+  }
+
+  onSubmit(){
+    console.log(this.roleForm.value);
   }
 
   async onDelete(caseToDelete: Case){
-    const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the case number ${caseToDelete.caseNumber}`);
-    const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
+    // const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the case number ${caseToDelete.caseNumber}`);
+    // const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
 
-    dialogRef.afterClosed().subscribe(async dialogResult => {
-      if (dialogResult) {
-        await this.casesService.deleteCaseFromLawyer(caseToDelete.id);
-        const index = this.dataSource.data.indexOf(caseToDelete);
-        console.log(index);
-        this.dataSource.data.splice(index, 1);
-        this.dataSource._updateChangeSubscription();
-      }});
+    // dialogRef.afterClosed().subscribe(async dialogResult => {
+    //   if (dialogResult) {
+    //     await this.casesService.deleteCaseFromLawyer(caseToDelete.id);
+    //     const index = this.dataSource.data.indexOf(caseToDelete);
+    //     this.dataSource.data.splice(index, 1);
+    //     this.dataSource._updateChangeSubscription();
+    //   }});
   }
 }
