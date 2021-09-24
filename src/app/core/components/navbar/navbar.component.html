@@ -39,14 +39,14 @@
                     <mat-icon class="material-icons md-dark ">settings</mat-icon>
                     <span>Settings</span>
                 </button> -->
+                <button mat-menu-item [matMenuTriggerFor]="admin">Admin</button>
 
-                <button type="button" routerLinkActive="active" mat-menu-item class="example-icon"
-                    routerLink="/profile">
+
+                <button type="button" routerLinkActive="active" mat-menu-item routerLink="/profile">
                     <span>Update Profile</span>
                 </button>
 
-                <button type="button" routerLinkActive="active" mat-menu-item class="example-icon"
-                    routerLink="/change-password">
+                <button type="button" routerLinkActive="active" mat-menu-item routerLink="/change-password">
                     <span>Change Password</span>
                 </button>
 
@@ -55,6 +55,11 @@
                     <span>Logout</span>
                 </button>
             </mat-menu>
+
+            <mat-menu #admin="matMenu">
+                <button mat-menu-item routerLink="/roles">Add Roles</button>
+                <button mat-menu-item routerLink="/users">Add Users</button>
+              </mat-menu>
         </div>
 
     </div>
