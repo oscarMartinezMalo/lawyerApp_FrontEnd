@@ -4,8 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { DialogData, DialogCustomComponent } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
-import { Case } from 'src/app/shared/models/case.model';
+import { DialogCustomComponent, DialogData } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
 import { AdminService } from 'src/app/shared/services/admin.service';
 
 interface Role {
@@ -63,34 +62,37 @@ export class RoleListComponent implements OnInit {
       if(name == ''){
          this.roleForm.get('name').setErrors({required: true});
          this.roleForm.get('name').setValue('');
-        }
+         return;
+      }
          
-         try {        
-          let role: Role ={id: '', name: name};
-          let newRole = await this.adminService.addRole(role);  
-          
-          //Add Role to the list
-          this.dataSource.data = [...this.dataSource.data, newRole];
+      try {        
+        let role: Role ={id: '', name: name};
+        let newRole = await this.adminService.addRole(role);  
+        
+        //Add Role to the list
+        this.dataSource.data = [...this.dataSource.data, newRole];
 
-          this.snackBar.open(`Role ${name} was Created`, 'X', { duration: 20000, panelClass: ['green-snackbar'] });
-          } catch (error) {
-            this.snackBar.open('Something when wrong or Role already exist, Role was not created', 'X', { duration: 20000, panelClass: ['red-snackbar'] });
-          }finally{
-              this.progressBarMode = '';
-          }
+        this.snackBar.open(`Role ${name} was Created`, 'X', { duration: 20000, panelClass: ['green-snackbar'] });
+      } catch (error) {
+        this.snackBar.open('Something when wrong or Role already exist, Role was not created', 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+      }finally{
+          this.progressBarMode = '';
+      }
     }    
   }
 
-  async onDelete(caseToDelete: Case){
-    // const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the case number ${caseToDelete.caseNumber}`);
-    // const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
+  async onDelete($event, roleToDelete: Role) {
+    $event.stopPropagation();
 
-    // dialogRef.afterClosed().subscribe(async dialogResult => {
-    //   if (dialogResult) {
-    //     await this.casesService.deleteCaseFromLawyer(caseToDelete.id);
-    //     const index = this.dataSource.data.indexOf(caseToDelete);
-    //     this.dataSource.data.splice(index, 1);
-    //     this.dataSource._updateChangeSubscription();
-    //   }});
+    const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the role ${roleToDelete.name}`);
+    const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
+
+    dialogRef.afterClosed().subscribe(async dialogResult => {
+      if (dialogResult) {
+        await this.adminService.deleteRoleById(roleToDelete.id);
+        const index = this.dataSource.data.indexOf(roleToDelete);
+        this.dataSource.data.splice(index, 1);
+        this.dataSource._updateChangeSubscription();
+      }});
   }
 }

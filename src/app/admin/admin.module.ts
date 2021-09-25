@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { MaterialModulesModule } from '../material-modules.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from '../shared/services/auth-guard.service';
+import { UserFormComponent } from './components/user-form/user-form.component';
 
 
 @NgModule({
@@ -15,8 +17,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
-      { path: 'roles', component: RoleListComponent },
-      { path: 'users', component: UserListComponent },
+      { path: 'roles', component: RoleListComponent, canActivate: [AuthGuard] },
+      { path: 'users', component: UserListComponent, canActivate: [AuthGuard] },      
+      { path: "users/:id", component: UserFormComponent, canActivate: [AuthGuard]},
       // { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
     ])
   ]
