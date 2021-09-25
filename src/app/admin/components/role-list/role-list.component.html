@@ -10,7 +10,10 @@
           
           <mat-form-field fxFlex="50"  fxFlex.xs="30">
               <mat-label>Add Role</mat-label>
-              <input matInput placeholder="Add new Roles"  formControlName="roleName" >
+              <input matInput placeholder="Add new Roles"  formControlName="name" >
+              <mat-error *ngIf="roleForm.controls['name'].hasError('required')">
+                Role Name is <strong>required</strong>
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field fxFlex="40"  fxFlex.xs="20">

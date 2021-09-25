@@ -18,7 +18,7 @@ interface Role {
     providedIn: 'root'
   })
   export class AdminService {
-    readonly BASE_URL = `${environment.baseUrl}api/account/roles`;
+    readonly BASE_URL = `${environment.baseUrl}api/account/`;
   
     constructor(
       private http: HttpClient,
@@ -29,7 +29,7 @@ interface Role {
 
 
       async getRoleList(): Promise<Role[]>{
-        let roles = await this.http.get(this.BASE_URL).
+        let roles = await this.http.get(this.BASE_URL + "roles").
          pipe(take(1),
            catchError((error: Response) => {
              if(error.status === 400) {
@@ -39,5 +39,14 @@ interface Role {
            })).toPromise();
    
            return roles as Role[];
+       }
+
+
+       async addRole(role: Role){
+         return await this.http.post(this.BASE_URL + 'addRole', role).
+         pipe(take(1),
+         catchError((error:Response) => {
+           return throwError(new AppError(error));
+         })).toPromise();
        }
 }  
