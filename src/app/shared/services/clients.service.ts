@@ -44,7 +44,6 @@ export class ClientsService {
   }
 
   async getClientById(Id: string): Promise<Client> {
-    console.log("Iam here");
     let client = await this.http.get(this.BASE_URL +"getClientById/" + Id).
     pipe(take(1),
       catchError((error: Response) => {

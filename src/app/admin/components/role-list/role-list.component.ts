@@ -50,7 +50,7 @@ export class RoleListComponent implements OnInit {
   }
 
   onRowClick(row) {
-    console.log(row);
+    this.router.navigate(['roles/', row.id]);
   }
 
   async onSubmit(){
@@ -89,10 +89,14 @@ export class RoleListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(async dialogResult => {
       if (dialogResult) {
-        await this.adminService.deleteRoleById(roleToDelete.id);
-        const index = this.dataSource.data.indexOf(roleToDelete);
-        this.dataSource.data.splice(index, 1);
-        this.dataSource._updateChangeSubscription();
+        try {          
+          await this.adminService.deleteRoleById(roleToDelete.id);
+          const index = this.dataSource.data.indexOf(roleToDelete);
+          this.dataSource.data.splice(index, 1);
+          this.dataSource._updateChangeSubscription();
+        } catch (error) {
+          this.snackBar.open('Something when wrong, Role was not deleted', 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+        }
       }});
   }
 }

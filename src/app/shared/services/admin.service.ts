@@ -26,39 +26,10 @@ interface Role {
       private route: ActivatedRoute,
       private router: Router,
       private snackBar: MatSnackBar
-      ) { }
+    ) { }
 
-      async getRoleList(): Promise<Role[]>{
-        let roles = await this.http.get(this.BASE_URL + "roles").
-         pipe(take(1),
-           catchError((error: Response) => {
-             if(error.status === 400) {
-               return throwError(new UserExitsError(error));
-             }
-             return throwError(new AppError(error));
-           })).toPromise();
-   
-           return roles as Role[];
-       }
-
-       async addRole(role: Role){
-         return await this.http.post(this.BASE_URL + 'addRole', role).
-         pipe(take(1),
-         catchError((error:Response) => {
-           return throwError(new AppError(error));
-         })).toPromise();
-       }
-
-       async deleteRoleById( roleId: string) {
-          return await this.http.delete(this.BASE_URL + 'deleteRole/' + roleId).
-          pipe(take(1),
-          catchError((error:Response) => {
-            return throwError(new AppError(error));
-          })).toPromise();
-       }
-
-       async getAllUsers() {
-        let users = await this.http.get(this.BASE_URL + "users").
+    async getRoleList(): Promise<Role[]>{
+      let roles = await this.http.get(this.BASE_URL + "roles").
         pipe(take(1),
           catchError((error: Response) => {
             if(error.status === 400) {
@@ -67,14 +38,69 @@ interface Role {
             return throwError(new AppError(error));
           })).toPromise();
   
-          return users as User[];
-       }
+        return roles as Role[];
+      }
 
-       async deleteUser(userId: string){
+      async addRole(role: Role){
+        return await this.http.post(this.BASE_URL + 'addRole', role).
+        pipe(take(1),
+        catchError((error:Response) => {
+          return throwError(new AppError(error));
+        })).toPromise();
+      }
+
+      async deleteRoleById( roleId: string) {
+        return await this.http.delete(this.BASE_URL + 'deleteRole/' + roleId).
+        pipe(take(1),
+        catchError((error:Response) => {
+          return throwError(new AppError(error));
+        })).toPromise();
+      }
+
+      async getAllUsers() {
+        let users = await this.http.get(this.BASE_URL + "users").
+        pipe(take(1),
+          catchError((error: Response) => {
+            if(error.status === 400) {
+              return throwError(new UserExitsError(error));
+            }
+            return throwError(new AppError(error));
+          })).toPromise();
+
+          return users as User[];
+      }
+
+      async deleteUser(userId: string){
         return await this.http.delete(this.BASE_URL + 'deleteUser/' + userId).
         pipe(take(1),
         catchError((error:Response) => {
           return throwError(new AppError(error));
         })).toPromise();
-       }
+      }
+
+      
+      async getRoleById(Id: string) {
+        let role = await this.http.get(this.BASE_URL +"getRoleById/" + Id).
+        pipe(take(1),
+          catchError((error: Response) => {
+            if(error.status === 400) {
+              return throwError(new UserExitsError(error));
+            }
+            return throwError(new AppError(error));
+          })).toPromise();
+    
+        return role as Role;
+      }
+
+          
+    async updateRole(roleIdUrl: string, roleForm: Role) {
+      await this.http.put(this.BASE_URL +'updateRole/' + roleIdUrl , roleForm).
+      pipe(take(1),
+      catchError((error: Response) => {
+        if(error.status === 400) {
+          return throwError(new UserExitsError(error));
+        }
+        return throwError(new AppError(error));
+      })).toPromise();
+    }
 }  

@@ -7,10 +7,11 @@ import { MaterialModulesModule } from '../material-modules.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard } from '../shared/services/auth-guard.service';
 import { UserFormComponent } from './components/user-form/user-form.component';
+import { RoleFormComponent } from './components/role-form/role-form.component';
 
 
 @NgModule({
-  declarations: [UserListComponent, RoleListComponent],
+  declarations: [UserListComponent, RoleListComponent, RoleFormComponent],
   imports: [
     CommonModule,
     MaterialModulesModule,
@@ -20,6 +21,7 @@ import { UserFormComponent } from './components/user-form/user-form.component';
       { path: 'roles', component: RoleListComponent, canActivate: [AuthGuard] },
       { path: 'users', component: UserListComponent, canActivate: [AuthGuard] },      
       { path: "users/:id", component: UserFormComponent, canActivate: [AuthGuard]},
+      { path: "roles/:id", component: RoleFormComponent, canActivate: [AuthGuard]},
       // { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
     ])
   ]
