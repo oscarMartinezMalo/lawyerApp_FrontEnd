@@ -5,12 +5,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DialogCustomComponent, DialogData } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
+import { Role } from 'src/app/shared/models/role.model';
 import { AdminService } from 'src/app/shared/services/admin.service';
 
-interface Role {
-  id: string;
-  name: string;
-}
+// interface Role {
+//   id: string;
+//   name: string;
+// }
 
 @Component({
   selector: 'app-role-list',
@@ -65,8 +66,10 @@ export class RoleListComponent implements OnInit {
          return;
       }
          
-      try {        
-        let role: Role ={id: '', name: name};
+      try {     
+        let users = [];   
+        let role: Role ={id: '', name: name, users: [] };
+
         let newRole = await this.adminService.addRole(role);  
         
         //Add Role to the list

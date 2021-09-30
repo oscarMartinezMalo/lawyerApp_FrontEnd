@@ -11,8 +11,9 @@ import { Case } from "../models/case.model";
 import { User } from "../models/user.model";
 
 interface Role {
-    id: string,
-    name: string,
+    id: string;
+    name: string;
+    users: User[];
   }
 
 @Injectable({
@@ -94,13 +95,34 @@ interface Role {
 
           
     async updateRole(roleIdUrl: string, roleForm: Role) {
-      await this.http.put(this.BASE_URL +'updateRole/' + roleIdUrl , roleForm).
+      let result = await this.http.put(this.BASE_URL +'updateRole/' + roleIdUrl , roleForm).
       pipe(take(1),
-      catchError((error: Response) => {
-        if(error.status === 400) {
-          return throwError(new UserExitsError(error));
-        }
+      catchError((error:Response) => {
         return throwError(new AppError(error));
       })).toPromise();
+
+      return result;
     }
+
+    
+  async deleteUserFromRole(userId: string, roleId: string) {
+    let result = await this.http.post(this.BASE_URL +'deleteUserfromRole/', {userId, roleId}).
+    pipe(take(1),
+    catchError((error:Response) => {
+      return throwError(new AppError(error));
+    })).toPromise();
+
+    return result;
+  }
+
+  
+  async addUserToRole(userId: string, roleId: string) {
+    let result = await this.http.post(this.BASE_URL +'addUserToRole/', {userId, roleId}).
+    pipe(take(1),
+    catchError((error:Response) => {
+      return throwError(new AppError(error));
+    })).toPromise();
+
+    return result;
+  }
 }  
