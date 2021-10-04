@@ -48,7 +48,7 @@ export class ProfileComponent implements OnInit{
 
           this.progressBarMode = 'indeterminate';
           try {                
-              await this.authService.updateProfile({ firstName, lastName, email });
+              await this.authService.updateProfile({id: '', firstName, lastName, email });
               this.authService.logOut();
               
               this.snackBar.open('Profile was successfully updated, please Log-in again', 'X', { duration: 20000, panelClass: ['green-snackbar'] });

@@ -13,7 +13,7 @@ import { AdminService } from 'src/app/shared/services/admin.service';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'delete'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'email', 'edit', 'delete'];
 
   public progressBarMode = '';
   public dataSource;
@@ -60,7 +60,12 @@ export class UserListComponent implements OnInit {
         } finally{
             this.progressBarMode = '';
         }
-      });     
+      });    
+  }
 
+  
+  onEdit($event, user: User) {
+    $event.stopPropagation();
+    this.router.navigate(['/users', user.id]);
   }
 }

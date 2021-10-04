@@ -1,22 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { DialogCustomComponent, DialogData } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DialogData, DialogCustomComponent } from 'src/app/shared/components/dialog-custom/dialog-custom.component';
 import { Role } from 'src/app/shared/models/role.model';
+import { User } from 'src/app/shared/models/user.model';
 import { AdminService } from 'src/app/shared/services/admin.service';
-@Component({
-  selector: 'app-role-list',
-  templateUrl: './role-list.component.html',
-  styleUrls: ['./role-list.component.scss']
-})
-export class RoleListComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'addUsers', 'delete'];  
+@Component({
+  selector: 'app-user-add-delete-role',
+  templateUrl: './user-add-delete-role.component.html',
+  styleUrls: ['./user-add-delete-role.component.scss']
+})
+export class UserAddDeleteRoleComponent implements OnInit {
+
+  displayedColumns: string[] = ['name', 'delete'];  
   roleForm: FormGroup;
 
+  user: User;
+  userId: string;
   public dataSource;
   public progressBarMode = '';
   
@@ -24,6 +28,7 @@ export class RoleListComponent implements OnInit {
     private fb: FormBuilder,
     private adminService: AdminService,
     private dialog: MatDialog,
+    private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar
   ) { 
@@ -35,7 +40,9 @@ export class RoleListComponent implements OnInit {
       name: [null, Validators.required],
     });
 
-    this.dataSource.data  = await this.adminService.getRoleList();
+    this.userId = this.route.snapshot.paramMap.get('id');
+    this.user = await this.adminService.getRolesOfUser(this.userId);
+    this.dataSource.data  = this.user.roles;
   }
 
   applyFilter(event) {

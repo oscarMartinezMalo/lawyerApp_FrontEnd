@@ -22,6 +22,7 @@ interface SignUpUser {
 }
 
 interface UpdateProfile {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -71,6 +72,15 @@ export class AuthService {
     }));
   }
 
+  getUserById(userId: string): Observable<User> {
+    return this.http.get(this.BASE_URL+ 'getUserById/' + userId).pipe(
+      catchError((error: Response) => {
+      return of(null);
+    }), map(user => {
+      return user;
+    }));
+  }
+
   async signup(emailPassword: SignUpUser) {
     await this.http.post(this.BASE_URL + 'signup', emailPassword).
       pipe(take(1),
@@ -83,7 +93,7 @@ export class AuthService {
   }
 
   async updateProfile(updateProfile: UpdateProfile){
-    await this.http.post(this.BASE_URL + 'updateProfile', updateProfile).
+    await this.http.put(this.BASE_URL + 'updateProfile', updateProfile).
     pipe(take(1),
       catchError((error: Response) =>{
         return throwError(error);
@@ -98,7 +108,7 @@ export class AuthService {
       pipe(take(1), map((token: LoginResponse) => {
         localStorage.setItem(this.JWT_TOKEN, token.accessToken);
         localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
-        this.user$.next({ id: token.id, firstName: token.firstName, lastName: token.lastName, email: token.email, role: token.role });
+        this.user$.next({ id: token.id, firstName: token.firstName, lastName: token.lastName, email: token.email, roles: [] });
         this.router.navigate([returnUrl]);
       }),
         catchError((error: Response) => {

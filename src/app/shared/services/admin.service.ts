@@ -1,11 +1,12 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { throwError } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { take, catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { AppError } from "../errors/app-error";
+import { RoleExitsError } from "../errors/role-exist-error";
 import { UserExitsError } from "../errors/user-exits-error";
 import { Case } from "../models/case.model";
 import { User } from "../models/user.model";
@@ -42,6 +43,20 @@ interface Role {
         return roles as Role[];
       }
 
+      
+  async getRolesOfUser(userId: string):  Promise<User> {
+        let user = await this.http.get(this.BASE_URL + "getUser/" + userId).
+        pipe(take(1),
+          catchError((error: Response) => {
+            if(error.status === 400) {
+              return throwError(new UserExitsError(error));
+            }
+            return throwError(new AppError(error));
+          })).toPromise();
+  
+        return user  as User;
+    }
+
       async addRole(role: Role){
         return await this.http.post(this.BASE_URL + 'addRole', role).
         pipe(take(1),
@@ -71,6 +86,11 @@ interface Role {
           return users as User[];
       }
 
+      getAllUsersByQuery(userNameQuery: string): Observable<User[]> {
+        const params = new HttpParams({fromString: `query=${userNameQuery}`});
+        return this.http.get(this.BASE_URL + 'getAllUsersByQuery', { params }) as Observable<User[]>;
+      }
+
       async deleteUser(userId: string){
         return await this.http.delete(this.BASE_URL + 'deleteUser/' + userId).
         pipe(take(1),
@@ -83,10 +103,8 @@ interface Role {
       async getRoleById(Id: string) {
         let role = await this.http.get(this.BASE_URL +"getRoleById/" + Id).
         pipe(take(1),
-          catchError((error: Response) => {
-            if(error.status === 400) {
-              return throwError(new UserExitsError(error));
-            }
+          catchError((error: Response) => {  
+            this.router.navigate(['roles']);
             return throwError(new AppError(error));
           })).toPromise();
     
@@ -120,6 +138,9 @@ interface Role {
     let result = await this.http.post(this.BASE_URL +'addUserToRole/', {userId, roleId}).
     pipe(take(1),
     catchError((error:Response) => {
+      if(error.status === 400) {
+        return throwError(new RoleExitsError(error));
+      }
       return throwError(new AppError(error));
     })).toPromise();
 
