@@ -1,6 +1,6 @@
 <div class="container" fxLayout="column" fxLayoutAlign="start center">    
     <mat-toolbar style="font-size: 19px; color: var(--primary);" fxLayoutAlign="center center" display="block">
-        <span>Add or Delete roles from User( {{user?.email}})</span>
+        <span>ROLES FROM USER {{ user?.firstName}} {{ user?.lastName}} ({{user?.email}})</span>
     </mat-toolbar>
 
 
@@ -8,13 +8,29 @@
        fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
           <button mat-flat-button color="primary"  fxFlex="10" fxFlex.xs="30"  fxFlex.sm="30">Add</button>
           
-          <mat-form-field fxFlex="50"  fxFlex.xs="30">
+          <!-- <mat-form-field fxFlex="50"  fxFlex.xs="30">
               <mat-label>Add Role</mat-label>
-              <input matInput placeholder="Add new Roles"  formControlName="name" >
-              <mat-error *ngIf="roleForm.controls['name'].hasError('required')">
+              <input matInput placeholder="Add new Roles"  formControlName="roleId" [matAutocomplete]="auto">
+              <mat-error *ngIf="roleForm.controls['roleId'].hasError('required')">
                 Role Name is <strong>required</strong>
             </mat-error>
-          </mat-form-field>
+          </mat-form-field> -->
+
+          <mat-form-field fxFlex="48" fxFlex.xs="100">
+            <mat-label> Role</mat-label>
+            <input matInput placeholder="Pick one role" formControlName="roleId" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn(filteredOptions | async)">
+                <mat-option *ngFor="let role of filteredOptions | async" [value]="role.id">
+                    {{role.name}}
+                </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="roleForm.controls['roleId'].hasError('required')">
+                role is <strong>required</strong>
+            </mat-error>                    
+            <!-- <mat-error *ngIf="editRoleForm.controls['userId'].hasError('incorrect')">
+                You have to pick a user
+            </mat-error> -->
+        </mat-form-field> 
 
           <mat-form-field fxFlex="40"  fxFlex.xs="20">
               <mat-label>Filter</mat-label>
@@ -39,6 +55,6 @@
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </div>
