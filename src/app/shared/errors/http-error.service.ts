@@ -11,11 +11,12 @@ export class HttpErrorService {
     private snackBar: MatSnackBar,
     ) { }
 
-  displayError() {
-    this.openPopUp();
+  displayError(message?: string) {
+    this.openPopUp(message);
   }
 
-  async openPopUp() {
-    this.snackBar.open(`To Access, please Login!!!`, 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+  async openPopUp(message?: string) {
+    let defaultMessage = message? message : 'To Access, please Login!!!';
+    this.snackBar.open(defaultMessage , 'X', { duration: 20000, panelClass: ['red-snackbar'] });
   }
 }

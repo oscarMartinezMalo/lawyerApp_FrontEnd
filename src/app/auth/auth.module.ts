@@ -52,7 +52,6 @@ import { AuthGuard } from '../shared/services/auth-guard.service';
       { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
       { path: 'forgot-password', component: ForgotPassComponent },      
       { path: 'forgot-password-token', component: ForgotPasswordTokenComponent }
-      // { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
     ])
   ]
 })

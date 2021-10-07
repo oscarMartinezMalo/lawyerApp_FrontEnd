@@ -5,13 +5,13 @@ import { RouterModule } from '@angular/router';
 import { RoleListComponent } from './components/role-list/role-list.component';
 import { MaterialModulesModule } from '../material-modules.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthGuard } from '../shared/services/auth-guard.service';
 import { UserFormComponent } from './components/user-form/user-form.component';
 import { RoleFormComponent } from './components/role-form/role-form.component';
 import { RoleAddDeleteUserComponent } from './components/role-add-delete-user/role-add-delete-user.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import { UserAddDeleteRoleComponent } from './components/user-add-delete-role/user-add-delete-role.component';
+import { AdminGuard } from '../shared/services/admin.guard';
 @NgModule({
   declarations: [
     UserListComponent,
@@ -29,14 +29,12 @@ import { UserAddDeleteRoleComponent } from './components/user-add-delete-role/us
     MatFormFieldModule,
     MatChipsModule,
     RouterModule.forChild([
-      { path: 'roles', component: RoleListComponent, canActivate: [AuthGuard] },  
-      { path: 'addUsersToRole/:id', component: RoleAddDeleteUserComponent, canActivate: [AuthGuard] },  
-      { path: "roles/:id", component: RoleFormComponent, canActivate: [AuthGuard]},
-      { path: 'users', component: UserListComponent, canActivate: [AuthGuard] },        
-      { path: "users/:id", component: UserFormComponent, canActivate: [AuthGuard]},
-      { path: 'addRolesToUser/:id', component: UserAddDeleteRoleComponent, canActivate: [AuthGuard] },      
-
-      // { path: 'reset-password', component: ResetPasswordComponent, canActivate: [AuthGuard] },
+      { path: 'roles', component: RoleListComponent, canActivate: [AdminGuard] },  
+      { path: 'addUsersToRole/:id', component: RoleAddDeleteUserComponent, canActivate: [AdminGuard] },  
+      { path: "roles/:id", component: RoleFormComponent, canActivate: [AdminGuard]},
+      { path: 'users', component: UserListComponent, canActivate: [AdminGuard] },        
+      { path: "users/:id", component: UserFormComponent, canActivate: [AdminGuard]},
+      { path: 'addRolesToUser/:id', component: UserAddDeleteRoleComponent, canActivate: [AdminGuard] },      
     ])
   ]
 })

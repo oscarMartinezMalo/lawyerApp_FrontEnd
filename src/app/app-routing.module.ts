@@ -5,16 +5,16 @@ import { CaseListComponent } from './lawyer/components/case-list/case-list.compo
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
-import { AuthGuard } from './shared/services/auth-guard.service';
+import { CanReadClientsGuard } from './shared/services/can-read-clients.guard';
 
 
 const routes: Routes = [
-  { path: "cases/new", component: CaseFormComponent, canActivate: [AuthGuard]},
-  { path: "cases/:id", component: CaseFormComponent, canActivate: [AuthGuard]},
-  { path: "cases", component: CaseListComponent, canActivate: [AuthGuard]},
-  { path: "clients/new", component: ClientFormComponent, canActivate: [AuthGuard]},
-  { path: "clients/:id", component: ClientFormComponent, canActivate: [AuthGuard]},
-  { path: "clients", component: ClientListComponent, canActivate: [AuthGuard]},
+  { path: "cases/new", component: CaseFormComponent, canActivate: [CanReadClientsGuard]},
+  { path: "cases/:id", component: CaseFormComponent, canActivate: [CanReadClientsGuard]},
+  { path: "cases", component: CaseListComponent, canActivate: [CanReadClientsGuard]},
+  { path: "clients/new", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
+  { path: "clients/:id", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
+  { path: "clients", component: ClientListComponent, canActivate: [CanReadClientsGuard]},
   { path: 'not_found', component: ErrorPageComponent, data: { message: 'This page can’t be reached'} },
   { path: '**', redirectTo: '/not_found' }
 ];

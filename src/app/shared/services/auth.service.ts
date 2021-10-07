@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { AppError } from '../errors/app-error';
 import { UserExitsError } from '../errors/user-exits-error';
 import { WrongCredentialError } from '../errors/wrong-crendential-error';
+import { Role } from '../models/role.model';
 import { User } from '../models/user.model';
 interface EmailPassword {
   email: string;
@@ -176,4 +177,25 @@ export class AuthService {
     this.user$.next(null);
     this.router.navigate(['signin']);
   }
+
+
+  ///// Abilities and Roles Authorization /////
+  ////  Assign roles to an ability method ////
+ canReadClients(user: User){
+    const allowed = ['Admin', 'Lawyer'];
+    return this.checkRoleAuthorization(user, allowed);
+ }
+
+
+  // determines if user has matching role
+  checkRoleAuthorization(user: User, allowedRoles: string[]): boolean {
+    if(!user) return false;
+    
+    for (const role of allowedRoles) {
+      if(user.roles.find(r => r.name == role))
+         return true;
+    }
+
+    return false;
+  } 
 }

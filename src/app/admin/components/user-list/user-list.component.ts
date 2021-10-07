@@ -45,7 +45,6 @@ export class UserListComponent implements OnInit {
     const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the user ${userToDelete.firstName} ${userToDelete.lastName} (${userToDelete.email}) `);
     const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
 
-    
       dialogRef.afterClosed().subscribe(async dialogResult => {
         try {
           if (dialogResult) {
