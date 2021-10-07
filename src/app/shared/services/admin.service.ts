@@ -154,4 +154,17 @@ interface Role {
 
       return result;
     }
+
+    async addRoleToUser(userId: string, roleId: string) {
+      let result = await this.http.post(this.BASE_URL +'addRoleToUser/', {userId, roleId}).
+      pipe(take(1),
+      catchError((error:Response) => {
+        if(error.status === 400) {
+          return throwError(new RoleExitsError(error));
+        }
+        return throwError(new AppError(error));
+      })).toPromise();
+
+      return result;
+    }
 }  

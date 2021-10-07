@@ -108,7 +108,7 @@ export class UserAddDeleteRoleComponent implements OnInit {
 
     let userPicked = this.roleArray?.find(u => u.id == roleId);
     if(!userPicked) {
-      this.snackBar.open(`You have to pick a user`, 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+      this.snackBar.open(`You have to pick a role`, 'X', { duration: 20000, panelClass: ['red-snackbar'] });
       this.roleForm.controls['roleId'].setValue('');
       return;
     }
@@ -116,14 +116,15 @@ export class UserAddDeleteRoleComponent implements OnInit {
 
     this.progressBarMode = 'indeterminate';
     try {
-      let userCreated = await this.adminService.addUserToRole( this.userId, roleId);
-      this.dataSource.data.push(userCreated);    
+      console.log(this.userId, roleId);
+      let roleCreated = await this.adminService.addRoleToUser( this.userId, roleId);
+      this.dataSource.data.push(roleCreated);    
       this.dataSource._updateChangeSubscription();
     } catch (error) {
       if (error instanceof RoleExitsError) {
         this.snackBar.open(error.getErrorListMessage()[0].description, 'X', { duration: 20000, panelClass: ['red-snackbar'] });
       }else {
-        this.snackBar.open("Something went wrong user was not added to role", 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+        this.snackBar.open("Something went wrong role was not added to user", 'X', { duration: 20000, panelClass: ['red-snackbar'] });
         throw error;  
       }
     }
