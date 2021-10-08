@@ -34,10 +34,13 @@ export class CaseListComponent implements OnInit {
   }
 
   onRowClick(row) {
+    console.log(row);
     this.router.navigate(['cases', row.id]);
   }
 
-  async onDelete(caseToDelete: Case){
+  async onDelete($event, caseToDelete: Case){
+    $event.stopPropagation();
+    
     const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the case number ${caseToDelete.caseNumber}`);
     const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
 

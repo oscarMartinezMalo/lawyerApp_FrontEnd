@@ -42,7 +42,7 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef> <mat-icon>delete</mat-icon> </th>
         <td mat-cell *matCellDef="let case" style="cursor: pointer">
-            <mat-icon (click)="onDelete(case)">delete</mat-icon>
+            <mat-icon (click)="onDelete($event, case)">delete</mat-icon>
         </td>
     </ng-container>
   

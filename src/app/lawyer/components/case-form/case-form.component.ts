@@ -22,10 +22,10 @@ export class CaseFormComponent implements OnInit {
   caseForm: FormGroup;
   caseIdUrl: string;
   @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
-  @ViewChild(MatAutocompleteTrigger) _auto: MatAutocompleteTrigger;
+  @ViewChild(MatAutocompleteTrigger) auto: MatAutocompleteTrigger;
   
   filteredOptions: Observable<Client[]>;
-  clientArray: Client[];
+  clientArray: Client[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -35,38 +35,6 @@ export class CaseFormComponent implements OnInit {
     private clientsService: ClientsService,
     private casesService: CasesService
     ) {
-          
-    // let scaseIdUrl = this.route.snapshot.paramMap.get('id');
-    //   this.casesService.getCaseById(scaseIdUrl).then(caseto =>{
-    //     if(caseto) {
-    //       this.getClientListObservable(caseto.client.firstName + " " + caseto.client.lastName).subscribe( t =>{
-    //         this.clientArray = t;
-    //         console.log("here",t);
-    //         this.filteredOptions = of(t);
-    //         this.fillFormEdit();
-            
-    //         console.log( this.matAutocomplete.options.length);
-    //         // this.matAutocomplete.options.first.select();
-    //       });
-    //     }
-    //   });   
-  }
-
-  setValue() {
-    this.clientArray = [{id: 2, firstName: 'Oscar', lastName: 'Martinez', address: '', phone: '786-785-7896', lawyerId: ''}];
-    this.filteredOptions = of(this.clientArray);
-
-    // console.log(this.matAutocomplete.options.first);
-    console.log(this._auto.autocomplete.options.toArray());
-    this.caseForm.controls['clientId'].setValue("Oscar MArt");
-    // this.matAutocomplete.options.first.select();
-    // setTimeout(()=>{      
-    //   console.log(this.matAutocomplete.options.first);
-    // }, 2000);
-
-    // let options = this.auto.autocomplete.options.toArray();
-    // console.log('here',testArray[0]);
-    // this.caseForm.controls['clientId'].setValue(testArray[0])
   }
 
   async ngOnInit() {
@@ -77,6 +45,7 @@ export class CaseFormComponent implements OnInit {
       clientId: ['' , [Validators.required, RequireMatch]]
     });
       
+    ///// Call api to retreive values from backend depending of user input  /////
     this.caseForm.controls['clientId'].valueChanges.pipe(
       startWith(''),
       switchMap(inputText => {    
@@ -87,7 +56,7 @@ export class CaseFormComponent implements OnInit {
       this.filteredOptions = of(clientList); 
     });   
    
-    this.fillFormEdit();
+    this.fillFormEdit();    // Fill the form if is on Edit
   }
 
   private async fillFormEdit() {    
@@ -98,38 +67,49 @@ export class CaseFormComponent implements OnInit {
       let caseToEdit = await this.casesService.getCaseById(this.caseIdUrl) as Case;
 
       this.caseForm.patchValue({
-        id: caseToEdit.id,
         caseNumber: caseToEdit.caseNumber,
         type: caseToEdit.type
       });      
 
-      // this.matAutocomplete.options.first.select();
+      this.setValueAutoComplete(caseToEdit.client);      // Set value of form control clientId
     }
   }
 
-  // AutoComplete Input
-  getClientListObservable(val: string) {
-    return this.clientsService.getClientsByQueryObservable(val);
-  }  
+  ///// AutoComplete Input /////
+    getClientListObservable(val: string) {
+      return this.clientsService.getClientsByQueryObservable(val);
+    }  
 
-
-  displayFn( clientArray: Client[]): (id: number) => string | null {
-    return (id: number) => { 
-      const correspondingOption = Array.isArray(clientArray) ? clientArray.find(option => option.id === id) : null;
-      return correspondingOption ? (`${correspondingOption.firstName} ${correspondingOption.lastName}`) : '';
+    displayFn( clientArray: Client[]): (id: number) => string | null {
+      return (id: number) => { 
+        const correspondingOption = Array.isArray(clientArray) ? clientArray.find(option => option.id === id) : null;
+        return correspondingOption ? (`${correspondingOption.firstName} ${correspondingOption.lastName}`) : '';
+      }
     }
+    
+    // Set value of Autocomplete
+    setValueAutoComplete(client: Client) {
+      this.clientArray.push(client);
+      this.filteredOptions = of(this.clientArray);
+      this.caseForm.controls['clientId'].setValue(client.id);
+      this.matAutocomplete.displayWith = this.displayFn(this.clientArray);
   }
-  // End AutoComplete Input
+  ///// End AutoComplete Input  /////
 
   async onSubmit() {    
     if (this.caseForm.invalid) { return; }
 
     this.progressBarMode = 'indeterminate';
     try {
-        await this.casesService.saveCase(this.caseForm.value);
-        this.snackBar.open(`Case ${this.caseForm.get('caseNumber').value} was successfuly created`, 'X', { duration: 20000, panelClass: ['green-snackbar'] });
+        if(this.caseIdUrl) {  // Edit
+          await this.casesService.updateCase(this.caseIdUrl, this.caseForm.value);
+        } else {  // Create
+          await this.casesService.saveCase(this.caseForm.value);
+        }
+        this.snackBar.open(`Case ${this.caseForm.get('caseNumber').value} was successfuly saved`, 'X', { duration: 20000, panelClass: ['green-snackbar'] });
         this.router.navigate(['/cases']);
     } catch (error) {
+        this.snackBar.open('Something when wrong, case was not saved', 'X', { duration: 20000, panelClass: ['red-snackbar'] });
         throw error; 
     } finally {
         this.progressBarMode = '';

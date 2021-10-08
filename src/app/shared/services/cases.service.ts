@@ -60,6 +60,17 @@ export class CasesService {
         })).toPromise();
     }
 
+    async updateCase(caseId: string, editCase: SaveCase){
+      await this.http.put(this.BASE_URL + caseId , editCase).
+        pipe(take(1),
+        catchError((error: Response) => {
+          if(error.status === 400) {
+            return throwError(new UserExitsError(error));
+          }
+          return throwError(new AppError(error));
+        })).toPromise();
+    }
+
     async deleteCaseFromLawyer(caseId: number){
       await this.http.delete(this.BASE_URL + caseId).
       pipe(take(1),
