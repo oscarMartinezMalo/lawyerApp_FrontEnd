@@ -39,7 +39,7 @@
                     <mat-icon class="material-icons md-dark ">settings</mat-icon>
                     <span>Settings</span>
                 </button> -->
-                <button mat-menu-item [matMenuTriggerFor]="admin">Admin</button>
+                <button mat-menu-item [matMenuTriggerFor]="admin" *ngIf="authService.checkRoleAuthorization(user,['Admin'])">Admin</button>
 
 
                 <button type="button" routerLinkActive="active" mat-menu-item routerLink="/profile">

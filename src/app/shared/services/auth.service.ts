@@ -34,7 +34,7 @@ interface LoginResponse {
   firstName: string;
   lastName: string;
   email: string;
-  role: string;
+  roles: Role[];
   accessToken: string;
   refreshToken: string;
 }
@@ -106,12 +106,21 @@ export class AuthService {
     const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/cases';
 
     await this.http.post(this.BASE_URL + 'signin', emailPassword).
-      pipe(take(1), map((token: LoginResponse) => {
-        localStorage.setItem(this.JWT_TOKEN, token.accessToken);
-        localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
-        this.user$.next({ id: token.id, firstName: token.firstName, lastName: token.lastName, email: token.email, roles: [] });
-        this.router.navigate([returnUrl]);
-      }),
+      pipe(
+        take(1), 
+        map((token: LoginResponse) => {
+          localStorage.setItem(this.JWT_TOKEN, token.accessToken);
+          localStorage.setItem(this.REFRESH_TOKEN, token.refreshToken);
+
+          this.user$.next({ 
+                    id: token.id,
+                    firstName: token.firstName,
+                    lastName: token.lastName,
+                    email: token.email,
+                    roles: token.roles });
+
+          this.router.navigate([returnUrl]);
+        }),
         catchError((error: Response) => {
           if (error.status === 401) {
             return throwError(new WrongCredentialError());
@@ -188,11 +197,11 @@ export class AuthService {
 
 
   // determines if user has matching role
-  checkRoleAuthorization(user: User, allowedRoles: string[]): boolean {
+  checkRoleAuthorization(user: User, allowedRoles: string[]): boolean {   
     if(!user) return false;
     
     for (const role of allowedRoles) {
-      if(user.roles.find(r => r.name == role))
+      if(user.roles.find(r => r.name == role) != undefined)
          return true;
     }
 
