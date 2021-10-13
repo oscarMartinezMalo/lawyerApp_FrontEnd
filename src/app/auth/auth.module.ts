@@ -20,7 +20,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { ForgotPasswordTokenComponent } from './forgot-password-token/forgot-password-token.component';
 import { ConfirmValidatorDirective } from './confirm-validator.directive';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthGuard } from '../shared/services/auth-guard.service';
+import { AuthGuard } from '../shared/guards/auth-guard.guard';
+import { LoggedGuard } from '../shared/guards/logged.guard';
 
 @NgModule({
   declarations: [
@@ -46,12 +47,13 @@ import { AuthGuard } from '../shared/services/auth-guard.service';
     FormsModule,
     MatProgressBarModule,
     RouterModule.forChild([
-      { path: 'signin', component: SigninComponent },
-      { path: 'signup', component: SignupComponent },
+      { path: 'signin', component: SigninComponent, canActivate: [LoggedGuard] },
+      { path: 'signup', component: SignupComponent, canActivate: [LoggedGuard] },
+      { path: 'forgot-password', component: ForgotPassComponent, canActivate: [LoggedGuard] },      
+      { path: 'forgot-password-token', component: ForgotPasswordTokenComponent, canActivate: [LoggedGuard] },
+      
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthGuard] },
-      { path: 'forgot-password', component: ForgotPassComponent },      
-      { path: 'forgot-password-token', component: ForgotPasswordTokenComponent }
     ])
   ]
 })

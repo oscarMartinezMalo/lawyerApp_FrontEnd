@@ -46,7 +46,7 @@ export class SignupComponent {
             try {                
                 await this.authService.signup({ firstName, lastName, email, password });
                 
-                this.snackBar.open('User was successfuly created, now you can Sign In', 'X', { duration: 20000, panelClass: ['green-snackbar'] });
+                this.snackBar.open('User was successfuly created, before login confim email in your email account', 'X', { duration: 20000, panelClass: ['green-snackbar'] });
                 this.router.navigate(['/signin']);
             } catch (error) {
                 if (error instanceof UserExitsError) {

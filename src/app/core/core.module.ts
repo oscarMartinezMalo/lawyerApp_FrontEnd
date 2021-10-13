@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MaterialModulesModule } from '../material-modules.module';
 import { SvgHomeImageComponent } from './components/svg-home-image/svg-home-image.component';
+import { LoggedGuard } from '../shared/guards/logged.guard';
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { SvgHomeImageComponent } from './components/svg-home-image/svg-home-imag
     MaterialModulesModule,
     RouterModule.forChild([
       { path: '', component: HomeComponent },
-      { path: 'home', component: HomeComponent},
+      { path: 'home', component: HomeComponent, canActivate: [LoggedGuard]},
     ]
     )
   ],    

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AccountConfirmationError } from 'src/app/shared/errors/account-confirmation-error';
 import { AppError } from 'src/app/shared/errors/app-error';
 import { WrongCredentialError } from 'src/app/shared/errors/wrong-crendential-error';
 import { AuthService } from '../../shared/services/auth.service';
@@ -46,6 +47,8 @@ export class SigninComponent {
             } catch (error) {               
                 if (error instanceof WrongCredentialError) { 
                     this.signForm.setErrors({ userPass: true });
+                 } else if(error instanceof AccountConfirmationError){
+                    this.signForm.setErrors({ accountNotConfirmed: true });
                  } else { throw error;  }
             } finally{
                 this.progressBarMode = '';

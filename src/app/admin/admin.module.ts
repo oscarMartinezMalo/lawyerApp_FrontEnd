@@ -11,7 +11,7 @@ import { RoleAddDeleteUserComponent } from './components/role-add-delete-user/ro
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatChipsModule} from '@angular/material/chips';
 import { UserAddDeleteRoleComponent } from './components/user-add-delete-role/user-add-delete-role.component';
-import { AdminGuard } from '../shared/services/admin.guard';
+import { AdminGuard } from '../shared/guards/admin.guard';
 @NgModule({
   declarations: [
     UserListComponent,

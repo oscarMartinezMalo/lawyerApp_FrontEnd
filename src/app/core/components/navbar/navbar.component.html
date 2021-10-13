@@ -4,7 +4,7 @@
             *ngIf="(isHandset$ | async) && (authService.user$ | async)">
             <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
-        <img src="../../../../assets/logo.svg" class="logo" [routerLink]="(authService.user$ | async) ? ['team-list'] : ['/home']" routerLinkActive="router-link-active">
+        <img src="../../../../assets/logo.svg" class="logo" [routerLink]="(authService.user$ | async) ? ['cases'] : ['/home']" routerLinkActive="router-link-active">
         <span class="spacer" *ngIf="isHandset$ | async"></span>
     </div>
     

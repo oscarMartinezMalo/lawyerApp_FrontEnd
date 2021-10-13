@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { DocumentFormListComponent } from './documents/components/document-form-list/document-list.component';
+import { FirstDocumentFormComponent } from './documents/components/first-document-form/first-document-form.component';
 import { CaseFormComponent } from './lawyer/components/case-form/case-form.component';
 import { CaseListComponent } from './lawyer/components/case-list/case-list.component';
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
-import { CanReadClientsGuard } from './shared/services/can-read-clients.guard';
+import { CanReadClientsGuard } from './shared/guards/can-read-clients.guard';
 
 
 const routes: Routes = [
@@ -15,6 +17,10 @@ const routes: Routes = [
   { path: "clients/new", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
   { path: "clients/:id", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
   { path: "clients", component: ClientListComponent, canActivate: [CanReadClientsGuard]},
+
+  { path: "document-form-list", component: DocumentFormListComponent},
+  { path: "form-first", component: FirstDocumentFormComponent},
+
   { path: 'not_found', component: ErrorPageComponent, data: { message: 'This page can’t be reached'} },
   { path: '**', redirectTo: '/not_found' }
 ];

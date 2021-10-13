@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { AccountConfirmationError } from '../errors/account-confirmation-error';
 import { AppError } from '../errors/app-error';
 import { UserExitsError } from '../errors/user-exits-error';
 import { WrongCredentialError } from '../errors/wrong-crendential-error';
@@ -124,6 +125,9 @@ export class AuthService {
         catchError((error: Response) => {
           if (error.status === 401) {
             return throwError(new WrongCredentialError());
+          }
+          if( error.status === 400){
+            return throwError(new AccountConfirmationError())
           }
           return throwError(new AppError(error));
         })).toPromise();

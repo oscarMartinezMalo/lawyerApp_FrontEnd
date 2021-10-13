@@ -1,0 +1,25 @@
+.document-card {
+    margin: 5px;
+  }
+
+  
+// .container-wrapper {
+//     display: flex;
+//     justify-content: space-evenly;
+//     align-items: center;
+//     height: 100%;
+// }
+
+.card-header {
+    width: -webkit-fill-available;
+}
+
+.container-wrapper {
+    margin-top: 40px;
+}
+
+.mat-card-image {
+    max-width: 300px;
+    // max-height: 350px;
+    margin-top: 0px !important;
+  }

@@ -18,6 +18,8 @@ import { DialogCustomComponent } from './shared/components/dialog-custom/dialog-
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 import { AdminModule } from './admin/admin.module';
+import { FirstDocumentFormComponent } from './documents/components/first-document-form/first-document-form.component';
+import { DocumentFormListComponent } from './documents/components/document-form-list/document-list.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { AdminModule } from './admin/admin.module';
     DialogCustomComponent,
     ClientFormComponent,
     ClientListComponent,
+    DocumentFormListComponent,
+    FirstDocumentFormComponent,
   ],
   imports: [
     BrowserModule,

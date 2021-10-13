@@ -7,7 +7,7 @@ import { ErrorPageComponent } from './components/error-page/error-page.component
 import { AppErrorHandler } from './errors/app-error-handler';
 // import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
-import { TokenInterceptorService } from './services/token-interceptor.service';
+import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 
 
 @NgModule({
