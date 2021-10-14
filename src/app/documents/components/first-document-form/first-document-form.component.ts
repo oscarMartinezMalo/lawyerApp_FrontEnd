@@ -10,6 +10,7 @@ import { Case } from 'src/app/shared/models/case.model';
 import { Client } from 'src/app/shared/models/client.model';
 import { CasesService } from 'src/app/shared/services/cases.service';
 import { ClientsService } from 'src/app/shared/services/clients.service';
+import { DocumentService } from 'src/app/shared/services/document.service';
 
 @Component({
   selector: 'app-first-document-form',
@@ -34,7 +35,8 @@ export class FirstDocumentFormComponent implements OnInit {
     public router: Router,
     private snackBar: MatSnackBar,
     private clientsService: ClientsService,
-    private casesService: CasesService
+    private casesService: CasesService,
+    private documentService: DocumentService
     ) {
   }
 
@@ -118,7 +120,19 @@ export class FirstDocumentFormComponent implements OnInit {
   }
   
   downloadFile($event){
-    $event.stopPropagation();
-    window.open('https://localhost:44375/api/document', '_blank');
+    // $event.stopPropagation();
+    // window.open('https://localhost:44375/api/document', '_blank');
+
+    this.documentService
+      .downloadDocument()
+      .subscribe(blob => {
+        console.log(blob);
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(blob)
+        a.href = objectUrl
+        a.download = 'immigrationForm.docx';
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      })
   }
 }
