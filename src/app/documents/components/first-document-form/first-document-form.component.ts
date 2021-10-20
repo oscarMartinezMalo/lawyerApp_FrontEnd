@@ -126,7 +126,6 @@ export class FirstDocumentFormComponent implements OnInit {
     this.documentService
       .downloadDocument()
       .subscribe(blob => {
-        console.log(blob);
         const a = document.createElement('a')
         const objectUrl = URL.createObjectURL(blob)
         a.href = objectUrl

@@ -7,6 +7,7 @@ import { CaseListComponent } from './lawyer/components/case-list/case-list.compo
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
+import { UploadFileComponent } from './shared/components/upload-file/upload-file.component';
 import { CanReadClientsGuard } from './shared/guards/can-read-clients.guard';
 
 
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: "clients/:id", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
   { path: "clients", component: ClientListComponent, canActivate: [CanReadClientsGuard]},
 
+  { path: "document-upload", component: UploadFileComponent},
   { path: "document-form-list", component: DocumentFormListComponent},
   { path: "form-first", component: FirstDocumentFormComponent},
 

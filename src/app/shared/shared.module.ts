@@ -8,16 +8,20 @@ import { AppErrorHandler } from './errors/app-error-handler';
 // import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { UploadFileComponent } from './components/upload-file/upload-file.component';
+import { MaterialModulesModule } from '../material-modules.module';
 
 
 @NgModule({
   declarations: [
     ErrorPageComponent,
+    UploadFileComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
+    HttpClientModule,    
+    MaterialModulesModule
   ],
   exports: [
     FormsModule,
