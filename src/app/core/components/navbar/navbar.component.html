@@ -73,9 +73,11 @@
         <!-- [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false"  *ngIf="(authService.user | async) && (authService.user$ | async)"> -->
 
         <mat-nav-list>
-            <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/cases']">My Cases</a>
+            <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/cases']">Cases</a>
             <mat-divider></mat-divider>
-            <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/clients']">My Clients</a>
+            <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/clients']">Clients</a>
+            <mat-divider></mat-divider>
+            <a mat-list-item (click)="drawerClose()" routerLinkActive="active" [routerLink]="['/documents']">Documents</a>
             <mat-divider></mat-divider>
         </mat-nav-list>
 

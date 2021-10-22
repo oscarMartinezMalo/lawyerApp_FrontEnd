@@ -20,6 +20,7 @@ import { ClientListComponent } from './lawyer/components/client-list/client-list
 import { AdminModule } from './admin/admin.module';
 import { FirstDocumentFormComponent } from './documents/components/first-document-form/first-document-form.component';
 import { DocumentFormListComponent } from './documents/components/document-form-list/document-list.component';
+import { DocumentListComponent } from './lawyer/components/document-list/document-list.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { DocumentFormListComponent } from './documents/components/document-form-
     ClientListComponent,
     DocumentFormListComponent,
     FirstDocumentFormComponent,
+    DocumentListComponent,
   ],
   imports: [
     BrowserModule,

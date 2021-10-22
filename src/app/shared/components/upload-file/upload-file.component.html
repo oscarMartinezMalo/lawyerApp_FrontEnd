@@ -16,11 +16,14 @@
     </mat-progress-bar> 
     
         <div fxLayout="row" fxLayoutAlign="start center" class="mat-typography">
-            <h2 style="font-weight: 800;">Upload file</h2>
+            <h2 style="font-weight: 800;">Upload File</h2>
         </div>
         <div>
             <input #fileInput type="file" style="display: none;" (change)="onFileSelected($event)">
-            <button class="action-button" mat-flat-button color="primary"  type="button" (click)="fileInput.click()">Select File</button>
+            <button class="action-button" mat-flat-button color="primary"  type="button" (click)="fileInput.click(); showSpinner= true">
+                <span style="margin-right: 10px;">Select File</span>
+                <mat-spinner *ngIf="showSpinner" color="accent" diameter="20" style="display: inline-block;"></mat-spinner>
+            </button>
               {{ fileSelectedName}}
              <button *ngIf="fileSelectedName" mat-icon-button color="warn" (click)="onRemoveDocument()">
                 <mat-icon>close</mat-icon>
