@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -47,5 +47,21 @@ export class DocumentService {
       })).toPromise();
 
       return documents as DocumentFile[];
+  }
+
+  downloadDocumentById(Id: number){
+    let document = this.http.get(this.BASE_URL + 'GetDocumentById/' + Id, {
+      responseType: 'blob', // Set the body as a blob object
+      observe: 'response'  // Add the headers to the response
+    }).
+    pipe(take(1),
+      catchError((error: Response) => {
+        if(error.status === 400) {
+          return throwError(new UserExitsError(error));
+        }
+        return throwError(new AppError(error));
+      }));
+
+    return document;
   }
 }

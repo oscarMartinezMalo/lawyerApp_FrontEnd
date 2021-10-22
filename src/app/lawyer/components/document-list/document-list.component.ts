@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -42,18 +43,17 @@ export class DocumentListComponent implements OnInit {
 
   async onDownload($event,documentToDownload: DocumentFile){
     $event.stopPropagation();
-    console.log(documentToDownload);
-    // const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the Client ${clientToDelete.firstName} ${clientToDelete.lastName}`);
-    // const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
 
-    // dialogRef.afterClosed().subscribe(async dialogResult => {
-    //   if (dialogResult) {
-    //     await this.clientsService.deleteClientFromLawyer(clientToDelete.id);
-    //     const index = this.dataSource.data.indexOf(clientToDelete);
-    //     console.log(index);
-    //     this.dataSource.data.splice(index, 1);
-    //     this.dataSource._updateChangeSubscription();
-    //   }});
+    this.documentService
+    .downloadDocumentById( documentToDownload.id )
+    .subscribe(httpResponse => {
+      const a = document.createElement('a')
+      const objectUrl = URL.createObjectURL(httpResponse.body)
+      a.href = objectUrl
+      a.download = documentToDownload.name;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+    })
   }
 
   async onDelete($event,clientToDelete: Client){
@@ -70,4 +70,7 @@ export class DocumentListComponent implements OnInit {
     //     this.dataSource._updateChangeSubscription();
     //   }});
   }
+
+
+
 }
