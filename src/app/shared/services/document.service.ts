@@ -64,4 +64,15 @@ export class DocumentService {
 
     return document;
   }
+
+  async deleteDocumentByFromUserId(id: number){
+   return this.http.delete(this.BASE_URL + 'delete/' + id).
+    pipe(take(1),
+    catchError((error: Response) => {
+      if(error.status === 400) {
+        return throwError(new UserExitsError(error));
+      }
+      return throwError(new AppError(error));
+    })).toPromise();    
+  }
 }

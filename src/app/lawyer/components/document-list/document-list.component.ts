@@ -20,7 +20,6 @@ export class DocumentListComponent implements OnInit {
   public dataSource;
 
   constructor(
-    private clientsService: ClientsService,
     private documentService: DocumentService,
     private dialog: MatDialog,
     private router: Router
@@ -56,19 +55,18 @@ export class DocumentListComponent implements OnInit {
     })
   }
 
-  async onDelete($event,clientToDelete: Client){
-    // $event.stopPropagation();
-    // const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the Client ${clientToDelete.firstName} ${clientToDelete.lastName}`);
-    // const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
+  async onDelete($event,documentToDelete: DocumentFile){
+    $event.stopPropagation();
+    const dialogData = new DialogData('Confirm Action', `Are you sure you want to delete the Document ${documentToDelete.name}`);
+    const dialogRef = this.dialog.open(DialogCustomComponent, { maxWidth: '500px', data: dialogData });
 
-    // dialogRef.afterClosed().subscribe(async dialogResult => {
-    //   if (dialogResult) {
-    //     await this.clientsService.deleteClientFromLawyer(clientToDelete.id);
-    //     const index = this.dataSource.data.indexOf(clientToDelete);
-    //     console.log(index);
-    //     this.dataSource.data.splice(index, 1);
-    //     this.dataSource._updateChangeSubscription();
-    //   }});
+    dialogRef.afterClosed().subscribe(async dialogResult => {
+      if (dialogResult) {
+        await this.documentService.deleteDocumentByFromUserId(documentToDelete.id);
+        const index = this.dataSource.data.indexOf(documentToDelete);
+        this.dataSource.data.splice(index, 1);
+        this.dataSource._updateChangeSubscription();
+      }});
   }
 
 
