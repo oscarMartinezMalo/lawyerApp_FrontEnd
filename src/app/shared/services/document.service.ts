@@ -49,6 +49,18 @@ export class DocumentService {
       return documents as DocumentFile[];
   }
 
+  async getDocumentById(id:string){
+    let document = await this.http.get(this.BASE_URL + 'getDocumentInfoById/' + id).
+    pipe(take(1),
+      catchError((error: Response) => {
+        if(error.status === 400) {
+          return throwError(new UserExitsError(error));
+        }
+        return throwError(new AppError(error));
+      })).toPromise();
+      return document as DocumentFile;
+}
+
   downloadDocumentById(Id: number){
     let document = this.http.get(this.BASE_URL + 'GetDocumentById/' + Id, {
       responseType: 'blob', // Set the body as a blob object
@@ -74,5 +86,29 @@ export class DocumentService {
       }
       return throwError(new AppError(error));
     })).toPromise();    
+  }
+
+  getVariablesOfDocument(documentId: number){
+    return this.http.get(this.BASE_URL + 'getVariablesOfDocument/' + documentId).
+    pipe(take(1),
+    catchError((error: Response) => {
+      if(error.status === 400) {
+        return throwError(new UserExitsError(error));
+      }
+      return throwError(new AppError(error));
+    })).toPromise();  
+  }
+
+  fillAndDownloadDocument(documentId, variablesList: Object[]) {
+    let document = this.http.post(this.BASE_URL + 'fillAndDownloadDocument/' + documentId, variablesList).
+    pipe(take(1),
+      catchError((error: Response) => {
+        if(error.status === 400) {
+          return throwError(new UserExitsError(error));
+        }
+        return throwError(new AppError(error));
+      })).toPromise();
+
+    return document;
   }
 }

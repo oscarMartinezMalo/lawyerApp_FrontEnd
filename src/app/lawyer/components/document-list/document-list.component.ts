@@ -15,7 +15,8 @@ import { DocumentService } from 'src/app/shared/services/document.service';
   styleUrls: ['./document-list.component.scss']
 })
 export class DocumentListComponent implements OnInit {
-  displayedColumns: string[] = ['name', 'dateCreated', 'size', 'download', 'delete'];
+  displayedColumns: string[] = ['name', 'dateCreated', 'size', 'fill', 'download', 'delete'];
+  variablesOfDocument: string[] = [];
 
   public dataSource;
 
@@ -69,6 +70,8 @@ export class DocumentListComponent implements OnInit {
       }});
   }
 
-
+  async onFill($event, documentToFill: DocumentFile) {
+    this.router.navigate(['document-form-fill/', documentToFill.id]);
+  }
 
 }

@@ -6,6 +6,7 @@ import { CaseFormComponent } from './lawyer/components/case-form/case-form.compo
 import { CaseListComponent } from './lawyer/components/case-list/case-list.component';
 import { ClientFormComponent } from './lawyer/components/client-form/client-form.component';
 import { ClientListComponent } from './lawyer/components/client-list/client-list.component';
+import { DocumentFormFillComponent } from './lawyer/components/document-form-fill/document-form-fill.component';
 import { DocumentListComponent } from './lawyer/components/document-list/document-list.component';
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
 import { UploadFileComponent } from './shared/components/upload-file/upload-file.component';
@@ -23,6 +24,7 @@ const routes: Routes = [
 
   { path: "document-upload", component: UploadFileComponent},
   { path: "document-form-list", component: DocumentFormListComponent},
+  { path: "document-form-fill/:id", component: DocumentFormFillComponent},
   { path: "form-first", component: FirstDocumentFormComponent},
 
   { path: 'not_found', component: ErrorPageComponent, data: { message: 'This page can’t be reached'} },

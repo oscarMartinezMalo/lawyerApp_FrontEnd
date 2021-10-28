@@ -21,6 +21,7 @@ import { AdminModule } from './admin/admin.module';
 import { FirstDocumentFormComponent } from './documents/components/first-document-form/first-document-form.component';
 import { DocumentFormListComponent } from './documents/components/document-form-list/document-list.component';
 import { DocumentListComponent } from './lawyer/components/document-list/document-list.component';
+import { DocumentFormFillComponent } from './lawyer/components/document-form-fill/document-form-fill.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { DocumentListComponent } from './lawyer/components/document-list/documen
     DocumentFormListComponent,
     FirstDocumentFormComponent,
     DocumentListComponent,
+    DocumentFormFillComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,8 @@ import { DocumentListComponent } from './lawyer/components/document-list/documen
     AuthModule,    
     AdminModule,
     AppRoutingModule,ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
