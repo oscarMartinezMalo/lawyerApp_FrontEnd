@@ -100,14 +100,19 @@ export class DocumentService {
   }
 
   fillAndDownloadDocument(documentId, variablesList: Object[]) {
-    let document = this.http.post(this.BASE_URL + 'fillAndDownloadDocument/' + documentId, variablesList).
+    let document = this.http.post(this.BASE_URL + 'fillAndDownloadDocument/' + documentId,
+     variablesList,
+      {
+      responseType: 'blob', // Set the body as a blob object
+      observe: 'response'  // Add the headers to the response
+    }).
     pipe(take(1),
       catchError((error: Response) => {
         if(error.status === 400) {
           return throwError(new UserExitsError(error));
         }
         return throwError(new AppError(error));
-      })).toPromise();
+      }));
 
     return document;
   }

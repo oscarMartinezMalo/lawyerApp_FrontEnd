@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentService } from 'src/app/shared/services/document.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { DocumentFile } from 'src/app/shared/models/document.model';
 
 @Component({
   selector: 'app-document-form-fill',
@@ -17,6 +18,7 @@ export class DocumentFormFillComponent implements OnInit {
 
   progressBarMode = '';
   documentId: string;
+  document: DocumentFile;
   
   constructor(    
     private documentService: DocumentService,
@@ -27,8 +29,8 @@ export class DocumentFormFillComponent implements OnInit {
   async ngOnInit() {    
     
     this.documentId = this.route.snapshot.paramMap.get('id');
-    let document = await this.documentService.getDocumentById(this.documentId);
-    let documentVariables = await this.documentService.getVariablesOfDocument(document.id) as string[];
+    this.document = await this.documentService.getDocumentById(this.documentId);
+    let documentVariables = await this.documentService.getVariablesOfDocument(this.document.id) as string[];
 
 
     const expensesArray = new FormArray([]);
@@ -49,12 +51,20 @@ export class DocumentFormFillComponent implements OnInit {
     return (this.fillForm.get('expenses') as FormArray).controls; 
   }
 
-  async onSubmit() { 
+   onSubmit() { 
     if (this.fillForm.invalid) { return; }
     this.progressBarMode = 'indeterminate';
 
     try {      
-     await this.documentService.fillAndDownloadDocument( this.documentId, this.fillForm.controls.expenses.value);
+     this.documentService.fillAndDownloadDocument( this.documentId, this.fillForm.controls.expenses.value)     
+    .subscribe(httpResponse => {
+      const a = document.createElement('a')
+      const objectUrl = URL.createObjectURL(httpResponse.body)
+      a.href = objectUrl
+      a.download = "DocumentChanged_"+this.document.name;
+      a.click();
+      URL.revokeObjectURL(objectUrl);
+    });
     } catch (error) {
         throw error; 
     } finally {
