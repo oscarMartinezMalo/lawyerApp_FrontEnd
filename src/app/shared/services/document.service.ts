@@ -108,9 +108,6 @@ export class DocumentService {
     }).
     pipe(take(1),
       catchError((error: Response) => {
-        if(error.status === 400) {
-          return throwError(new UserExitsError(error));
-        }
         return throwError(new AppError(error));
       }));
 

@@ -67,6 +67,7 @@ export class AuthService {
 
   getUser(): Observable<User> {
     return this.http.get(this.BASE_URL+ 'getUser').pipe(
+      take(1),
       catchError((error: Response) => {
       return of(null);
     }), map(user => {
@@ -104,7 +105,7 @@ export class AuthService {
   }
 
   async login(emailPassword: EmailPassword) {
-    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/cases';
+    const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl') || '/user-home-page';
 
     await this.http.post(this.BASE_URL + 'signin', emailPassword).
       pipe(

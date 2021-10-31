@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { UserHomePageComponent } from './core/components/user-home-page/user-home-page.component';
 import { DocumentFormListComponent } from './documents/components/document-form-list/document-list.component';
 import { FirstDocumentFormComponent } from './documents/components/first-document-form/first-document-form.component';
 import { CaseFormComponent } from './lawyer/components/case-form/case-form.component';
@@ -11,6 +12,7 @@ import { DocumentListComponent } from './lawyer/components/document-list/documen
 import { ErrorPageComponent } from './shared/components/error-page/error-page.component';
 import { UploadFileComponent } from './shared/components/upload-file/upload-file.component';
 import { CanReadClientsGuard } from './shared/guards/can-read-clients.guard';
+import { LoggedGuard } from './shared/guards/logged.guard';
 
 
 const routes: Routes = [

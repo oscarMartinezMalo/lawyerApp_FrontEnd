@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DocumentService } from 'src/app/shared/services/document.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DocumentFile } from 'src/app/shared/models/document.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-document-form-fill',
@@ -13,7 +14,7 @@ import { DocumentFile } from 'src/app/shared/models/document.model';
 export class DocumentFormFillComponent implements OnInit {
   // Reactive form
   fillForm = new FormGroup({
-    expenses: new FormArray([])
+    documentVariables: new FormArray([])
   });
 
   progressBarMode = '';
@@ -23,6 +24,7 @@ export class DocumentFormFillComponent implements OnInit {
   constructor(    
     private documentService: DocumentService,
     private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
   ) {
    }
 
@@ -31,9 +33,6 @@ export class DocumentFormFillComponent implements OnInit {
     this.documentId = this.route.snapshot.paramMap.get('id');
     this.document = await this.documentService.getDocumentById(this.documentId);
     let documentVariables = await this.documentService.getVariablesOfDocument(this.document.id) as string[];
-
-
-    const expensesArray = new FormArray([]);
     
     for (const variable of documentVariables) {
       this.createVariablesFields(variable);
@@ -42,34 +41,31 @@ export class DocumentFormFillComponent implements OnInit {
 
   createVariablesFields( variableName: string){
     const FormGroupCreated = new FormGroup({ [variableName] : new FormControl(variableName) });
-    (this.fillForm.get('expenses') as FormArray).push(FormGroupCreated);
+    (this.fillForm.get('documentVariables') as FormArray).push(FormGroupCreated);
   }
 
   getExpenseForm() {
-    // console.log("ahora",(this.fillForm.get('expenses') as FormArray).controls[0].value.variableName);
-    // console.log((this.fillForm.get('expenses') as FormArray).controls[0].value.variableName);
-    return (this.fillForm.get('expenses') as FormArray).controls; 
+    return (this.fillForm.get('documentVariables') as FormArray).controls; 
   }
 
    onSubmit() { 
     if (this.fillForm.invalid) { return; }
     this.progressBarMode = 'indeterminate';
+   
+      this.documentService.fillAndDownloadDocument( this.documentId, this.fillForm.controls.documentVariables.value)     
+      .subscribe(httpResponse => {
+        const a = document.createElement('a')
+        const objectUrl = URL.createObjectURL(httpResponse.body)
+        a.href = objectUrl
+        a.download = "DocumentChanged_"+this.document.name;
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      error => { 
+        this.snackBar.open('Something when wrong, document was not process', 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+      });
 
-    try {      
-     this.documentService.fillAndDownloadDocument( this.documentId, this.fillForm.controls.expenses.value)     
-    .subscribe(httpResponse => {
-      const a = document.createElement('a')
-      const objectUrl = URL.createObjectURL(httpResponse.body)
-      a.href = objectUrl
-      a.download = "DocumentChanged_"+this.document.name;
-      a.click();
-      URL.revokeObjectURL(objectUrl);
-    });
-    } catch (error) {
-        throw error; 
-    } finally {
-        this.progressBarMode = '';
-    }
+      this.progressBarMode = '';
   }
 
   getPropertyName(obj){

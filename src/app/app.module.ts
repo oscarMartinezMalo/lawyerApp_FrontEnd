@@ -22,6 +22,7 @@ import { FirstDocumentFormComponent } from './documents/components/first-documen
 import { DocumentFormListComponent } from './documents/components/document-form-list/document-list.component';
 import { DocumentListComponent } from './lawyer/components/document-list/document-list.component';
 import { DocumentFormFillComponent } from './lawyer/components/document-form-fill/document-form-fill.component';
+import { UserHomePageComponent } from './core/components/user-home-page/user-home-page.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { DocumentFormFillComponent } from './lawyer/components/document-form-fil
     DocumentFormListComponent,
     FirstDocumentFormComponent,
     DocumentListComponent,
-    DocumentFormFillComponent
+    DocumentFormFillComponent,
+    UserHomePageComponent
   ],
   imports: [
     BrowserModule,

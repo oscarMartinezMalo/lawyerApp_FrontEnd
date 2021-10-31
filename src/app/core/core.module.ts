@@ -6,6 +6,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { MaterialModulesModule } from '../material-modules.module';
 import { SvgHomeImageComponent } from './components/svg-home-image/svg-home-image.component';
 import { LoggedGuard } from '../shared/guards/logged.guard';
+import { UserHomePageComponent } from './components/user-home-page/user-home-page.component';
+import { CanReadClientsGuard } from '../shared/guards/can-read-clients.guard';
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { LoggedGuard } from '../shared/guards/logged.guard';
     MaterialModulesModule,
     RouterModule.forChild([
       { path: '', component: HomeComponent },
-      { path: 'home', component: HomeComponent, canActivate: [LoggedGuard]},
+      { path: 'home', component: HomeComponent, canActivate: [LoggedGuard]},      
+      { path: "user-home-page", component: UserHomePageComponent},
     ]
     )
   ],    
