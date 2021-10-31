@@ -5,6 +5,7 @@ import { DocumentService } from 'src/app/shared/services/document.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DocumentFile } from 'src/app/shared/models/document.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-document-form-fill',
@@ -51,8 +52,9 @@ export class DocumentFormFillComponent implements OnInit {
    onSubmit() { 
     if (this.fillForm.invalid) { return; }
     this.progressBarMode = 'indeterminate';
-   
+
       this.documentService.fillAndDownloadDocument( this.documentId, this.fillForm.controls.documentVariables.value)     
+      .pipe( finalize(() => this.progressBarMode = ''),)
       .subscribe(httpResponse => {
         const a = document.createElement('a')
         const objectUrl = URL.createObjectURL(httpResponse.body)
@@ -60,12 +62,13 @@ export class DocumentFormFillComponent implements OnInit {
         a.download = "DocumentChanged_"+this.document.name;
         a.click();
         URL.revokeObjectURL(objectUrl);
+        this.progressBarMode = '';
       },
       error => { 
         this.snackBar.open('Something when wrong, document was not process', 'X', { duration: 20000, panelClass: ['red-snackbar'] });
       });
 
-      this.progressBarMode = '';
+
   }
 
   getPropertyName(obj){
