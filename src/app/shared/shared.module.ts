@@ -8,7 +8,7 @@ import { AppErrorHandler } from './errors/app-error-handler';
 // import { AuthGuard } from './services/auth-guard.service';
 import { AuthService } from './services/auth.service';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
-import { UploadFileComponent } from './components/upload-file/upload-file.component';
+import { UploadFileComponent } from '../lawyer/components/upload-file/upload-file.component';
 import { MaterialModulesModule } from '../material-modules.module';
 
 

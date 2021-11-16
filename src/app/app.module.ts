@@ -23,6 +23,8 @@ import { DocumentFormListComponent } from './documents/components/document-form-
 import { DocumentListComponent } from './lawyer/components/document-list/document-list.component';
 import { DocumentFormFillComponent } from './lawyer/components/document-form-fill/document-form-fill.component';
 import { UserHomePageComponent } from './core/components/user-home-page/user-home-page.component';
+import { UploadFileAnonymousComponent } from './shared/components/upload-file-anonymous/upload-file-anonymous.component';
+import { DocumentFormFillAnonymousComponent } from './shared/components/document-form-fill-anonymous/document-form-fill-anonymous.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { UserHomePageComponent } from './core/components/user-home-page/user-hom
     FirstDocumentFormComponent,
     DocumentListComponent,
     DocumentFormFillComponent,
-    UserHomePageComponent
+    UserHomePageComponent,
+    UploadFileAnonymousComponent,
+    DocumentFormFillAnonymousComponent
   ],
   imports: [
     BrowserModule,

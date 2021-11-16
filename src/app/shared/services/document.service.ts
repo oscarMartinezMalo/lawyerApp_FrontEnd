@@ -9,6 +9,7 @@ import { AppError } from '../errors/app-error';
 import { UserExitsError } from '../errors/user-exits-error';
 import { Client } from '../models/client.model';
 import { DocumentFile } from '../models/document.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,16 @@ export class DocumentService {
     });
   }
 
-  uploadDocument(fd: FormData){
+  uploadDocument(fd: FormData){       
     return this.http.post(this.BASE_URL, fd, {
+      responseType: 'text',
+      reportProgress: true,
+      observe: 'events'
+    })
+  }
+
+  uploadDocumentAnonymous(fd: FormData){       
+    return this.http.post(this.BASE_URL + "uploadFileAnonymous", fd, {
       responseType: 'text',
       reportProgress: true,
       observe: 'events'
@@ -59,6 +68,18 @@ export class DocumentService {
         return throwError(new AppError(error));
       })).toPromise();
       return document as DocumentFile;
+}
+
+async getDocumentByIdAnonymous(id:string){
+  let document = await this.http.get(this.BASE_URL + 'getDocumentInfoByIdAnonymous/' + id).
+  pipe(take(1),
+    catchError((error: Response) => {
+      if(error.status === 400) {
+        return throwError(new UserExitsError(error));
+      }
+      return throwError(new AppError(error));
+    })).toPromise();
+    return document as DocumentFile;
 }
 
   downloadDocumentById(Id: number){
@@ -99,8 +120,34 @@ export class DocumentService {
     })).toPromise();  
   }
 
+  getVariablesOfDocumentAnonymous(documentId: number){
+    return this.http.get(this.BASE_URL + 'getVariablesOfDocumentAnonymous/' + documentId).
+    pipe(take(1),
+    catchError((error: Response) => {
+      if(error.status === 400) {
+        return throwError(new UserExitsError(error));
+      }
+      return throwError(new AppError(error));
+    })).toPromise();  
+  }
+
   fillAndDownloadDocument(documentId, variablesList: Object[]) {
     let document = this.http.post(this.BASE_URL + 'fillAndDownloadDocument/' + documentId,
+     variablesList,
+      {
+      responseType: 'blob', // Set the body as a blob object
+      observe: 'response'  // Add the headers to the response
+    }).
+    pipe(take(1),
+      catchError((error: Response) => {
+        return throwError(new AppError(error));
+      }));
+
+    return document;
+  }
+
+  fillAndDownloadDocumentAnonymous(documentId, variablesList: Object[]) {
+    let document = this.http.post(this.BASE_URL + 'fillAndDownloadDocumentAnonymous/' + documentId,
      variablesList,
       {
       responseType: 'blob', // Set the body as a blob object

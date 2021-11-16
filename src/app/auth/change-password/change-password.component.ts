@@ -51,7 +51,6 @@ export class ChangePasswordComponent implements OnInit {
 
         if (error instanceof UserExitsError) {
           this.resetPasswordForm.setErrors({ accountExitorPasswordComplexity: true });
-          console.log(error);
           this.formErrors = error.getErrorListMessage();
          } else {
           this.snackBar.open('Something went wrong, password was not updated', 'X', {duration: 20000,panelClass: ['red-snackbar']});         

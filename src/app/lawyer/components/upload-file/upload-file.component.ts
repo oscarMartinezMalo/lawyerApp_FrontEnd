@@ -5,7 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProgressBarMode } from '@angular/material/progress-bar';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
-import { DocumentService } from '../../services/document.service';
+import { AuthService } from '../../../shared/services/auth.service';
+import { DocumentService } from '../../../shared/services/document.service';
 
 @Component({
   selector: 'app-upload-file',
@@ -31,6 +32,7 @@ export class UploadFileComponent implements OnInit {
   constructor( 
     private documentService: DocumentService,    
     private snackBar: MatSnackBar,
+    private authService: AuthService
     ) { }
 
   ngOnInit(): void {
@@ -55,7 +57,10 @@ export class UploadFileComponent implements OnInit {
     
     const fd = new FormData();
     fd.append('document', this.selectedFile);
-    
+    this.uploadDocumentWithUser(fd);
+  }
+
+  private uploadDocumentWithUser(fd){
     this.documentService.uploadDocument(fd)
     .subscribe(
       event => {

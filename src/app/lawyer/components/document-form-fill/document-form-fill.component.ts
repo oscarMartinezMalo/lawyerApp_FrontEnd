@@ -29,8 +29,7 @@ export class DocumentFormFillComponent implements OnInit {
   ) {
    }
 
-  async ngOnInit() {    
-    
+  async ngOnInit() {       
     this.documentId = this.route.snapshot.paramMap.get('id');
     this.document = await this.documentService.getDocumentById(this.documentId);
     let documentVariables = await this.documentService.getVariablesOfDocument(this.document.id) as string[];
@@ -54,12 +53,15 @@ export class DocumentFormFillComponent implements OnInit {
     this.progressBarMode = 'indeterminate';
 
       this.documentService.fillAndDownloadDocument( this.documentId, this.fillForm.controls.documentVariables.value)     
-      .pipe( finalize(() => this.progressBarMode = ''),)
+      .pipe( finalize(() => {
+        this.progressBarMode = '';
+        this.fillForm.reset();
+      }))
       .subscribe(httpResponse => {
         const a = document.createElement('a')
         const objectUrl = URL.createObjectURL(httpResponse.body)
         a.href = objectUrl
-        a.download = "DocumentChanged_"+this.document.name;
+        a.download = "DocumentChanged_" + this.document.name;
         a.click();
         URL.revokeObjectURL(objectUrl);
         this.progressBarMode = '';

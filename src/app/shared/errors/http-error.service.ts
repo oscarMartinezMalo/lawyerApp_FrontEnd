@@ -17,6 +17,6 @@ export class HttpErrorService {
 
   async openPopUp(message?: string) {
     let defaultMessage = message? message : 'To Access, please Login!!!';
-    this.snackBar.open(defaultMessage , 'X', { duration: 20000, panelClass: ['red-snackbar'] });
+    this.snackBar.open(defaultMessage , 'X', { duration: 10000, panelClass: ['red-snackbar'] });
   }
 }
