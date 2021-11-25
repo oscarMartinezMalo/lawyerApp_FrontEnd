@@ -2,6 +2,10 @@ $toolbar: 60px;
 
 mat-toolbar.mat-toolbar {
     height: $toolbar;
+    padding: 0 10%;
+    background-color: transparent;
+    position: absolute;
+    z-index: 10;
 }
 
 /* Main area */
@@ -92,4 +96,12 @@ button.ng-star-inserted.mat-stroked-button {
     .material-icons, span {
         color: var(--primary);
     }
+}
+
+.action-buttons {
+    justify-content: space-around;
+}
+
+.sidenav-container{
+    height: 100% !important;
 }

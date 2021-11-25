@@ -1,4 +1,4 @@
-<mat-toolbar class="container" color="primary">
+<mat-toolbar color="primary">
     <div fxLayout="row" fxLayoutAlign="start center" fxFlex="50%">
         <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer?.toggle()"
             *ngIf="(isHandset$ | async) && (authService.user$ | async)">
@@ -7,9 +7,8 @@
         <img src="../../../../assets/logo.svg" class="logo" [routerLink]="(authService.user$ | async) ? ['cases'] : ['/home']" routerLinkActive="router-link-active">
         <span class="spacer" *ngIf="isHandset$ | async"></span>
     </div>
-    
 
-    <div fxLayout="row" fxLayoutAlign="end center" fxFlex="50%">
+    <div fxLayout="row" fxLayoutAlign="end center" fxFlex="50%" class="action-buttons">
         <div *ngIf='!(authService.user$ | async)' fxLayoutGap="8px">
             <button routerLinkActive="active" routerLink="/signin" (click)="drawerClose()" #rla="routerLinkActive"
                 [ngClass]="rla.isActive ?  'mat-stroked-button mat-button-base' : 'mat-button'">
