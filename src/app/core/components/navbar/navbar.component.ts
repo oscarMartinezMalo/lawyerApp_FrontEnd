@@ -32,6 +32,7 @@ export class NavbarComponent {
 
     sharedService.isUrlHome$.subscribe(urlIsHome=>{
          this.urlIsHome = urlIsHome;
+         console.log(urlIsHome);
          if(urlIsHome) {
              this.toolbarColor = 'navbar-transparent';
          } else {
@@ -43,7 +44,7 @@ export class NavbarComponent {
     const scrollTop = data.getElementRef().nativeElement.scrollTop || 0;
     this.zone.run(() => { 
          this.toolbarColor = (scrollTop < 50 && this.urlIsHome ) ? 'navbar-transparent' : 'navbar-solid-color'; });
-  })
+    })
    }
 
   // tslint:disable-next-line: use-lifecycle-interface
