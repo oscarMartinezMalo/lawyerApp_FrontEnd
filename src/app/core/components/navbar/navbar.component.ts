@@ -1,9 +1,11 @@
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, NgZone, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, shareReplay, take } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import { CdkScrollable, ScrollDispatcher } from '@angular/cdk/scrolling';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,6 +14,8 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class NavbarComponent {
   @ViewChild('drawer') public drawer: MatSidenav;
+  public toolbarColor = 'navbar-solid-color';
+  urlIsHome: boolean;
 
   isHandset$: Observable<boolean> = this.breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.Small])
@@ -20,8 +24,27 @@ export class NavbarComponent {
 
   constructor(
       private breakpointObserver: BreakpointObserver,
-      public authService: AuthService
-  ) { }
+      public authService: AuthService,      
+        private scrollDispatcher: ScrollDispatcher,
+        private zone: NgZone,
+        private sharedService: SharedService
+  ) {
+
+    sharedService.isUrlHome$.subscribe(urlIsHome=>{
+         this.urlIsHome = urlIsHome;
+         if(urlIsHome) {
+             this.toolbarColor = 'navbar-transparent';
+         } else {
+            this.toolbarColor = 'navbar-solid-color';
+         }
+    })
+    
+  this.scrollDispatcher.scrolled().subscribe((data: CdkScrollable) => {
+    const scrollTop = data.getElementRef().nativeElement.scrollTop || 0;
+    this.zone.run(() => { 
+         this.toolbarColor = (scrollTop < 50 && this.urlIsHome ) ? 'navbar-transparent' : 'navbar-solid-color'; });
+  })
+   }
 
   // tslint:disable-next-line: use-lifecycle-interface
   public async ngOnInit() {
@@ -35,5 +58,6 @@ export class NavbarComponent {
           }
       });
   }
+
 
 }

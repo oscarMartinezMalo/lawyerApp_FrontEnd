@@ -1,11 +1,9 @@
 :host {
-
-    // height:100vh;
+    // height: 100%;
 }
 
 .content {
-    background-color: white;    
-    // height:100vh;
+    background-color: white;
 }
 
 section{    
@@ -71,6 +69,9 @@ section{
                 width: 120%;
                 height: auto;
                 transform: translateX(0%) rotate(26deg);
+                @media (max-width: 600px) {
+                    width: 100%;            
+                }
             }
         }
     

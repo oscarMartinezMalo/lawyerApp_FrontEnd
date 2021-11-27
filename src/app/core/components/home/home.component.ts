@@ -1,4 +1,6 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-home',
@@ -6,17 +8,18 @@ import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
   styleUrls: ['./home.component.scss']
 })
 
-export class HomeComponent implements OnInit {  
+export class HomeComponent implements OnInit, OnDestroy {  
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private sharedService : SharedService) {
+   }
+  
+  ngOnInit(): void {    
+    this.sharedService.isUrlHome$.next(true);
   }
 
-  @HostListener("document:scroll", []) onWindowScroll() {
-    console.log("scrollActivated");
+  ngOnDestroy(): void {
+    this.sharedService.isUrlHome$.next(false);
   }
-
 
   onScrollClick(scrollElement, valueToScroll){
     scrollElement.scrollTo({ left: ( valueToScroll), behavior: 'smooth' });
