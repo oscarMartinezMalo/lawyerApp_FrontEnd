@@ -32,7 +32,6 @@ export class NavbarComponent {
 
     sharedService.isUrlHome$.subscribe(urlIsHome=>{
          this.urlIsHome = urlIsHome;
-         console.log(urlIsHome);
          if(urlIsHome) {
              this.toolbarColor = 'navbar-transparent';
          } else {

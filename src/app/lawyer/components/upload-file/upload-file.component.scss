@@ -7,13 +7,13 @@
     justify-content: space-evenly;
     align-items: center;
     height: 100%;
-    background-image: url("/assets/uploadRocket.svg");
+    background-image: url("/assets/uploadBackground.svg");
     background-repeat: no-repeat;
     background-position-x: left;
-    background-size: 60%;
-    @media only screen and (max-width: 992px) {
-      background-size: 100%;
-    }
+    background-size: cover;
+    // @media only screen and (max-width: 992px) {
+    //   background-size: 100%;
+    // }
 }
 
 mat-card {

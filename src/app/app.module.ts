@@ -25,6 +25,7 @@ import { DocumentFormFillComponent } from './lawyer/components/document-form-fil
 import { UserHomePageComponent } from './core/components/user-home-page/user-home-page.component';
 import { UploadFileAnonymousComponent } from './shared/components/upload-file-anonymous/upload-file-anonymous.component';
 import { DocumentFormFillAnonymousComponent } from './shared/components/document-form-fill-anonymous/document-form-fill-anonymous.component';
+import { FileSizePipe } from './shared/pipes/fileSize.pipe';
 
 @NgModule({
   declarations: [

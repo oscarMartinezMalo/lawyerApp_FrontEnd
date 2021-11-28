@@ -10,12 +10,14 @@ import { AuthService } from './services/auth.service';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { UploadFileComponent } from '../lawyer/components/upload-file/upload-file.component';
 import { MaterialModulesModule } from '../material-modules.module';
+import { FileSizePipe } from './pipes/fileSize.pipe';
 
 
 @NgModule({
   declarations: [
     ErrorPageComponent,
     UploadFileComponent,
+    FileSizePipe
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import { MaterialModulesModule } from '../material-modules.module';
   exports: [
     FormsModule,
     ErrorPageComponent,
+    FileSizePipe
   ],
   providers: [
     // AuthGuard,
