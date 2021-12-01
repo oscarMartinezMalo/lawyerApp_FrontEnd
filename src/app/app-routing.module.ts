@@ -15,6 +15,7 @@ import { UploadFileAnonymousComponent } from './shared/components/upload-file-an
 import { UploadFileComponent } from './lawyer/components/upload-file/upload-file.component';
 import { CanReadClientsGuard } from './shared/guards/can-read-clients.guard';
 import { LoggedGuard } from './shared/guards/logged.guard';
+import { AuthGuard } from './shared/guards/auth-guard.guard';
 
 
 const routes: Routes = [
@@ -24,7 +25,7 @@ const routes: Routes = [
   { path: "clients/new", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
   { path: "clients/:id", component: ClientFormComponent, canActivate: [CanReadClientsGuard]},
   { path: "clients", component: ClientListComponent, canActivate: [CanReadClientsGuard]},
-  { path: "documents", component: DocumentListComponent, canActivate: [CanReadClientsGuard]},
+  { path: "documents", component: DocumentListComponent, canActivate: [AuthGuard]},
 
   { path: "document-upload", component: UploadFileComponent},
   { path: "document-upload-anonymous", component: UploadFileAnonymousComponent},

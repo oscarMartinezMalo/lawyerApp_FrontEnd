@@ -1,6 +1,6 @@
-import { Component, NgZone, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, shareReplay, take } from 'rxjs/operators';
+import { map, shareReplay, take, tap } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -12,7 +12,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   @ViewChild('drawer') public drawer: MatSidenav;
   public toolbarColor = 'navbar-solid-color';
   urlIsHome: boolean;
@@ -22,6 +22,8 @@ export class NavbarComponent {
       .pipe(map(result => result.matches));
   afAuth: any;
 
+  userIsLawyerorAdmin = false;
+
   constructor(
       private breakpointObserver: BreakpointObserver,
       public authService: AuthService,      
@@ -29,26 +31,25 @@ export class NavbarComponent {
         private zone: NgZone,
         private sharedService: SharedService
   ) {
-
     sharedService.isUrlHome$.subscribe(urlIsHome=>{
-         this.urlIsHome = urlIsHome;
-         if(urlIsHome) {
-             this.toolbarColor = 'navbar-transparent';
-         } else {
+          this.urlIsHome = urlIsHome;
+          if(urlIsHome) {
+              this.toolbarColor = 'navbar-transparent';
+          } else {
             this.toolbarColor = 'navbar-solid-color';
-         }
+          }
     })
     
-  this.scrollDispatcher.scrolled().subscribe((data: CdkScrollable) => {
-    const scrollTop = data.getElementRef().nativeElement.scrollTop || 0;
-    this.zone.run(() => { 
-         this.toolbarColor = (scrollTop < 50 && this.urlIsHome ) ? 'navbar-transparent' : 'navbar-solid-color'; });
-    })
+    this.scrollDispatcher.scrolled().subscribe((data: CdkScrollable) => {
+      const scrollTop = data.getElementRef().nativeElement.scrollTop || 0;
+      this.zone.run(() => { 
+          this.toolbarColor = (scrollTop < 50 && this.urlIsHome ) ? 'navbar-transparent' : 'navbar-solid-color'; });
+      })
    }
 
-  // tslint:disable-next-line: use-lifecycle-interface
   public async ngOnInit() {
       this.drawerClose();
+      this.isAdminOrLawyer();
   }
 
   public drawerClose(): void {
@@ -59,5 +60,13 @@ export class NavbarComponent {
       });
   }
 
-
+  isAdminOrLawyer(){
+    this.authService.user$
+    .pipe(
+      map(user => {
+        return this.authService.canReadClients(user) ? true : false;
+      })     
+    ).subscribe(result =>{
+      return this.userIsLawyerorAdmin = result });
+  }
 }
