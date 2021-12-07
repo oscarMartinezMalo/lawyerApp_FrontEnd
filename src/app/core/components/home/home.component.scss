@@ -21,6 +21,7 @@ section{
         transform: translateY(-15%);
         margin-top: 50px;
         margin-bottom: 80px;
+        z-index: 10;
     }
 
     .text-description > h1, p {
@@ -55,7 +56,8 @@ section{
     
         .image-section {
             width: 100%;
-            transform: translateY(-50px);
+            transform: translateY(-50px);            
+            z-index: 1;
             @media (max-width: 600px) {
                 transform: translateY(-130px);            
             }
