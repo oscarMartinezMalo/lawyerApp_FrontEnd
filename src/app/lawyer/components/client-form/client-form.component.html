@@ -19,6 +19,10 @@
                     <mat-error *ngIf="clientForm.controls['firstName'].hasError('required')">
                         First Name is <strong>required</strong>
                     </mat-error>
+                    <mat-error  
+                    *ngIf="clientForm.controls['firstName'].hasError('minlength') && !clientForm.controls['firstName'].hasError('required')">
+                        First Name should have more than <strong>3 Characters</strong>
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100">
@@ -26,6 +30,10 @@
                     <input matInput placeholder="Last Name" formControlName="lastName" />
                     <mat-error *ngIf="clientForm.controls['lastName'].hasError('required')">
                         Last Name is <strong>required</strong>
+                    </mat-error>
+                    <mat-error  
+                    *ngIf="clientForm.controls['lastName'].hasError('minlength') && !clientForm.controls['lastName'].hasError('required')">
+                        Last Name should have more than <strong>3 Characters</strong>
                     </mat-error>
                 </mat-form-field>
 
@@ -35,6 +43,10 @@
                     <mat-error *ngIf="clientForm.controls['address'].hasError('required')">
                         Address is <strong>required</strong>
                     </mat-error>
+                    <mat-error  
+                    *ngIf="clientForm.controls['address'].hasError('minlength') && !clientForm.controls['address'].hasError('required')">
+                        Address should have more than <strong>5 Characters</strong>
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100">
@@ -42,6 +54,10 @@
                     <input matInput placeholder="Phone" formControlName="phone" />
                     <mat-error *ngIf="clientForm.controls['phone'].hasError('required')">
                         Phone is <strong>required</strong>
+                    </mat-error>
+                    <mat-error  
+                    *ngIf="clientForm.controls['phone'].hasError('minlength') && !clientForm.controls['phone'].hasError('required')">
+                        Phone should have more than <strong>6 Characters</strong>
                     </mat-error>
                 </mat-form-field>
 

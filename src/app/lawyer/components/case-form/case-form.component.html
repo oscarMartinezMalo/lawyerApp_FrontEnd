@@ -18,6 +18,10 @@
                     <mat-error *ngIf="caseForm.controls['caseNumber'].hasError('required')">
                         Case Number is <strong>required</strong>
                     </mat-error>
+                    <mat-error
+                    *ngIf="caseForm.controls['caseNumber'].hasError('minlength') && !caseForm.controls['caseNumber'].hasError('required')">
+                    Case Number should have more than <strong>4 Characters</strong>
+                </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="outline" fxFlex="48" fxFlex.xs="100">

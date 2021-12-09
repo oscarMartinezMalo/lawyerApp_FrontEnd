@@ -40,13 +40,13 @@ section{
     }
 
     p {
-        font-size: 1.4vw;
-        line-height: 1.5vw;
+        font-size: 1.4em;
+        line-height: 20px;
         width: 70%;
         padding-bottom: 10px;
         @media (max-width: 600px) {
-            font-size: small;
-            line-height: initial ;          
+            // font-size: small;
+            // line-height: initial ;          
         }
     }
 
