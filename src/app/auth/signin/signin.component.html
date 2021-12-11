@@ -1,8 +1,9 @@
-<mat-progress-bar style="position: fixed;" [mode]="progressBarMode" value="0"
-    [style.visibility]="progressBarMode ? 'visible' : 'hidden'">
-</mat-progress-bar>
 <div class="container-wrapper">        
     <mat-card class="mat-custom-authen">
+        <mat-progress-bar [mode]="progressBarMode" value="0"
+        [style.visibility]="progressBarMode ? 'visible' : 'hidden'">
+         </mat-progress-bar>
+
         <div class="error-message" fxLayout="row" fxLayoutAlign="center center" *ngIf="signForm.hasError('userPass')"> 
             <strong> Wrong User or Password</strong>
         </div>
